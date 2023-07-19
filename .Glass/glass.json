@@ -1,0 +1,85 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Drivetrain": "Subsystem",
+      "/SmartDashboard/Elevator": "Subsystem",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/ManualElevator": "Command",
+      "/SmartDashboard/ManualWrist": "Command",
+      "/SmartDashboard/Wrist": "Subsystem"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "AprilTags": {
+          "style": "Hidden"
+        },
+        "Blue Charge Station": {
+          "arrows": false,
+          "style": "Line"
+        },
+        "Blue Community 0": {
+          "arrows": false,
+          "style": "Line"
+        },
+        "Blue Community 1": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Blue Loading Zone 0": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Blue Loading Zone 1": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Nodes": {
+          "arrows": false,
+          "length": 0.10000000149011612,
+          "width": 0.10000000149011612
+        },
+        "Red Charge Station": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Red Community 0": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Red Community 1": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Red Loading Zone 0": {
+          "arrows": false,
+          "style": "Line (Closed)"
+        },
+        "Red Loading Zone 1": {
+          "arrows": false,
+          "style": "Line"
+        },
+        "Staging Markers": {
+          "arrows": false,
+          "length": 0.10000000149011612,
+          "width": 0.10000000149011612
+        },
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "498"
+  }
+}
