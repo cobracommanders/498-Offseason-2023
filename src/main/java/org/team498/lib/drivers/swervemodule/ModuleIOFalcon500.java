@@ -17,6 +17,7 @@ import org.team498.lib.util.Falcon500Conversions;
 
 import static org.team498.C2023.Constants.DrivetrainConstants.*;
 import static org.team498.C2023.Ports.Drivetrain.*;
+import static org.team498.C2023.Ports.Accessories.DriveBus;
 
 public class ModuleIOFalcon500 implements ModuleIO {
     public enum Module {
@@ -26,13 +27,16 @@ public class ModuleIOFalcon500 implements ModuleIO {
         BR(BR_DRIVE, BR_STEER, BR_CANCODER, BR_MODULE_OFFSET);
 
         private final int driveID, steerID, encoderID;
+        private final String busID;
         private final double angleOffset;
 
         Module(int driveID, int steerID, int encoderID, double angleOffset) {
+            String busID = DriveBus;
             this.driveID = driveID;
             this.steerID = steerID;
             this.encoderID = encoderID;
             this.angleOffset = angleOffset;
+            this.busID = busID;
         }
     }
 
@@ -43,12 +47,12 @@ public class ModuleIOFalcon500 implements ModuleIO {
     private final double angleOffset;
 
     private SwerveModuleState currentTarget = new SwerveModuleState();
-    String canivoreName = "bus";
+    
     public ModuleIOFalcon500(Module module) {
-        this.module = module;
-        drive = new WPI_TalonFX(module.driveID, canivoreName);
-        steer = new WPI_TalonFX(module.steerID, canivoreName);
-        encoder = new WPI_CANCoder(module.encoderID, canivoreName);
+        this.module = module;  
+        drive = new WPI_TalonFX(module.driveID, module.busID);
+        steer = new WPI_TalonFX(module.steerID, module.busID);
+        encoder = new WPI_CANCoder(module.encoderID, module.busID);
         angleOffset = module.angleOffset;
 
         configDriveMotor(drive);

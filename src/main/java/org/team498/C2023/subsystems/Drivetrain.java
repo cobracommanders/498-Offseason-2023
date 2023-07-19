@@ -50,8 +50,7 @@ public class Drivetrain extends SubsystemBase {
     private final GyroIO gyro;
     private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
 
-    private Drivetrain() {
-        String canivoreName = "bus";
+    private Drivetrain() { 
         modules = switch (Constants.mode) {
             case REAL, REPLAY ->
                 new ModuleIO[] {
