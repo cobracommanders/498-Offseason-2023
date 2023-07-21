@@ -42,6 +42,7 @@ public final class Ports {
 
     public static class Manipulator {
         public static final int ROLLERS = 40;
+        public static final int ROLLERS2 = 41; //set these
     }
 
     public static class ElevatorWrist {
@@ -53,5 +54,6 @@ public final class Ports {
         public static final int BLINKIN = 9; // PWM
         public static final int SETUP_SWITCH = 8; //DIO
         public static final String DriveBus = "bus"; //Canivore's name
+        public static final String RioBus =  "rio"; //Name of the native bus on the roborio
     }
 }

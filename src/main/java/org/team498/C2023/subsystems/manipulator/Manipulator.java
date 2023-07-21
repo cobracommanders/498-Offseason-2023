@@ -15,7 +15,7 @@ public class Manipulator extends SubsystemBase {
 
     private Manipulator() {
         IO = switch (Constants.mode) {
-            case REAL, REPLAY -> new ManipulatorIONEO();
+            case REAL, REPLAY -> new ManipulatorIOFALCON();
             case SIM -> new ManipulatorIO() {};
         };
     }
