@@ -31,7 +31,7 @@ public class ElevatorWrist extends SubsystemBase {
         IO.updateInputs(inputs);
         Logger.getInstance().processInputs("ElevatorWrist", inputs);
 
-        Robot.elevatorWristMechanism.setAngle(inputs.angle * 360 - 60);
+        Robot.elevatorWristMechanism.setAngle(inputs.angle * 360 - 90);
 
         Logger.getInstance().recordOutput("ElevatorWrist/Pose", getPose());
 

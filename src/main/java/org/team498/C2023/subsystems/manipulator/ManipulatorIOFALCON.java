@@ -13,8 +13,8 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     private final TalonFX rMotor;
 
     public ManipulatorIOFALCON() {
-        lMotor = new TalonFX(ROLLERS, RioBus);
-        rMotor = new TalonFX(ROLLERS2,RioBus);
+        lMotor = new TalonFX(L_ROLLERS, RioBus);
+        rMotor = new TalonFX(R_ROLLERS,RioBus);
 
 
         lMotor.setInverted(false);

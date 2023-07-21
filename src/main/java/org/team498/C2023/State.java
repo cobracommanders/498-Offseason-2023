@@ -167,15 +167,15 @@ public enum State {
     }
 
     public enum Manipulator {
-        INTAKE_CONE(1),
+        INTAKE_CONE(-1),
         INTAKE_CUBE(-1),
 
         SPIT(0.9),
-        MID_CONE(-1),
+        MID_CONE(1),
         MID_CUBE(0.5),
-        TOP_CONE(-1),
+        TOP_CONE(1),
         TOP_CUBE(0.5),
-        LOW_CONE(-0.75),
+        LOW_CONE(0.75),
 
         AUTO_SHOT(0.5),
         SHOOT_DRIVE_CUBE_MID(0),

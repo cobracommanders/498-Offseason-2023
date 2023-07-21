@@ -18,7 +18,7 @@ public final class Ports {
         public static final int BL_CANCODER = 12;
         public static final int BR_CANCODER = 14;
 
-        public static final int GYRO = 20;
+        public static final int GYRO = 15;
     }
 
     public static class IntakeRollers {
@@ -41,8 +41,8 @@ public final class Ports {
     }
 
     public static class Manipulator {
-        public static final int ROLLERS = 40;
-        public static final int ROLLERS2 = 41; //set these
+        public static final int L_ROLLERS = 40;
+        public static final int R_ROLLERS = 41; 
     }
 
     public static class ElevatorWrist {
