@@ -36,6 +36,6 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
 
     @Override
     public void setSpeed(double speed) {
-        lMotor.set(TalonFXControlMode.PercentOutput, .5); //TODO update this eventually
+        //lMotor.set(TalonFXControlMode.PercentOutput, .5); //TODO update this eventually
     }
 }

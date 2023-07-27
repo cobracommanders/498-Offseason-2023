@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 import org.team498.C2023.*;
+import org.team498.C2023.subsystems.intakewrist.IntakeWrist;
 
 public class Elevator extends SubsystemBase {
     private final ElevatorIO IO;
@@ -34,6 +35,7 @@ public class Elevator extends SubsystemBase {
         Robot.elevatorMechanism.setLength(inputs.positionMeters);
         Logger.getInstance().recordOutput("Elevator/Stage 1 Pose", getStageOnePose());
         Logger.getInstance().recordOutput("Elevator/Stage 2 Pose", getStageTwoPose());
+        SmartDashboard.putNumber("elevatorposition", inputs.positionMeters);
 
         if (state == State.Elevator.SHOOT_DRIVE_CUBE_MID || state == State.Elevator.SHOOT_DRIVE_CUBE_TOP || state == State.Elevator.SHOOT_DRIVE_CONE_MID) {
             IO.setPosition(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
@@ -49,9 +51,11 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setState(State.Elevator state) {
-        IO.setPosition(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
-        Logger.getInstance().recordOutput("Elevator/State", state.name());
-        this.state = state;
+        //if (IntakeWrist.getInstance().isElevatorSafe()) {
+            IO.setPosition(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
+            Logger.getInstance().recordOutput("Elevator/State", state.name());
+            this.state = state;
+        //}
     }
 
     public Pose3d getStageOnePose() {

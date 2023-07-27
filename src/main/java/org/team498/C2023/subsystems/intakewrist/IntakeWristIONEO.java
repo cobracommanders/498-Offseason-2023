@@ -45,8 +45,8 @@ public class IntakeWristIONEO extends SubsystemBase implements IntakeWristIO {
     @Override
     public void periodic() {
         double speed = PID.calculate(getAngle());
-        left.set(-speed);
-        right.set(speed);
+       left.set(speed);
+        right.set(-speed);
     }
 
     @Override

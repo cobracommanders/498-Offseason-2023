@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 import org.team498.C2023.*;
@@ -31,8 +32,8 @@ public class ElevatorWrist extends SubsystemBase {
         IO.updateInputs(inputs);
         Logger.getInstance().processInputs("ElevatorWrist", inputs);
 
-        Robot.elevatorWristMechanism.setAngle(inputs.angle * 360 - 90);
-
+        Robot.elevatorWristMechanism.setAngle((inputs.angle - 0.353510) * 360); // - whaatever on 360 based on angle
+        SmartDashboard.putNumber("elevator wrist angle", inputs.angle);
         Logger.getInstance().recordOutput("ElevatorWrist/Pose", getPose());
 
         // IO.setBrakeMode(RobotState.isEnabled());

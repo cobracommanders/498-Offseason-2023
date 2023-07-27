@@ -91,7 +91,7 @@ public class ElevatorWristIONEO extends SubsystemBase implements ElevatorWristIO
         if (angle < 1)
             angle += 1;
 
-        return angle - 1.370912;
+        return angle - 0.353510 - 0.5 - 0.869758;
     }
 
 

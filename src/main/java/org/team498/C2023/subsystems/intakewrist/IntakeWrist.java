@@ -1,5 +1,6 @@
 package org.team498.C2023.subsystems.intakewrist;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.littletonrobotics.junction.Logger;
@@ -25,7 +26,7 @@ public class IntakeWrist extends SubsystemBase {
     public void periodic() {
         IO.updateInputs(inputs);
         Logger.getInstance().processInputs("IntakeWrist", inputs);
-
+        SmartDashboard.putNumber("intake wrist angle", inputs.angle);
         Robot.intakeWristMechanism.setAngle(inputs.angle * 360 - 20);
         // IO.setBrakeMode(RobotState.isEnabled());
 
@@ -37,6 +38,10 @@ public class IntakeWrist extends SubsystemBase {
 
     public boolean atSetpoint() {
         return Math.abs(inputs.targetAngle - inputs.angle) < 0.05;
+        // return true;
+    }
+    public boolean isElevatorSafe() {
+        return inputs.angle > -0.1;
         // return true;
     }
 

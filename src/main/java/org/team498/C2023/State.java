@@ -60,7 +60,7 @@ public enum State {
 
         SPIT(0),
 
-        MID_CONE(0.825),
+        MID_CONE(0.5),
         MID_CUBE(0.5),
 
         LOW_CONE(0.3),
@@ -91,13 +91,13 @@ public enum State {
 
     public enum ElevatorWrist {
         SINGLE_SS(0.06),
-        DOUBLE_SS(0.109352),
+        DOUBLE_SS(0),
 
         SPIT(-0.025),
 
-        LOW_CONE(0.1),
+        LOW_CONE(0),
 
-        MID_CONE(0.105),
+        MID_CONE(0),
         // MID_CONE(0.1),
         MID_CUBE(-0.04),
 
@@ -113,7 +113,7 @@ public enum State {
 
         AUTO_SHOT(0.02),
 
-        IDLE_CUBE(-0.06),
+        IDLE_CUBE(0),
         IDLE_CONE(-0.06),
 
         CONEARISER_CUBE(-0.065),
@@ -150,14 +150,14 @@ public enum State {
     }
 
     public enum IntakeWrist {
-        INTAKE(0.1),
-        SPIT(0.4),
-        IDLE_OUT(0.1),
-        TRAVEL_CUBE(0.3),
-        TEMPORARY_IDLE(0.1),
-        TRAVEL_CONE(0.2),
-        IDLE_IN(0.4),
-        OUTTAKE(0.08);
+        INTAKE(0),
+        SPIT(0),
+        IDLE_OUT(0),
+        TRAVEL_CUBE(0),
+        TEMPORARY_IDLE(0),
+        TRAVEL_CONE(0),
+        IDLE_IN(-0.2),
+        OUTTAKE(0.);
 
         public final double position;
 

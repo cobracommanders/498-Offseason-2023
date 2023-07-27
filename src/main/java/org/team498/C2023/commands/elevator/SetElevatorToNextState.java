@@ -13,7 +13,7 @@ public class SetElevatorToNextState extends CommandBase {
     }
 
     @Override
-    public void initialize() {
+    public void execute() {
         elevator.setState(RobotState.getInstance().getState().elevator);
     }
 
