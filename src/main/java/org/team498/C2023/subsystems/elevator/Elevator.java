@@ -29,13 +29,13 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         IO.updateInputs(inputs);
-        Logger.getInstance().processInputs("Elevator", inputs);
+        //Logger.getInstance().processInputs("Elevator", inputs);
         IO.setBrakeMode(RobotState.isEnabled());
 
         Robot.elevatorMechanism.setLength(inputs.positionMeters);
-        Logger.getInstance().recordOutput("Elevator/Stage 1 Pose", getStageOnePose());
-        Logger.getInstance().recordOutput("Elevator/Stage 2 Pose", getStageTwoPose());
-        SmartDashboard.putNumber("elevatorposition", inputs.positionMeters);
+        //Logger.getInstance().recordOutput("Elevator/Stage 1 Pose", getStageOnePose());
+        //Logger.getInstance().recordOutput("Elevator/Stage 2 Pose", getStageTwoPose());
+        //SmartDashboard.putNumber("elevatorposition", inputs.positionMeters);
 
         if (state == State.Elevator.SHOOT_DRIVE_CUBE_MID || state == State.Elevator.SHOOT_DRIVE_CUBE_TOP || state == State.Elevator.SHOOT_DRIVE_CONE_MID) {
             IO.setPosition(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));

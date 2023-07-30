@@ -25,7 +25,7 @@ public class IntakeWrist extends SubsystemBase {
     @Override
     public void periodic() {
         IO.updateInputs(inputs);
-        Logger.getInstance().processInputs("IntakeWrist", inputs);
+        //Logger.getInstance().processInputs("IntakeWrist", inputs);
         SmartDashboard.putNumber("intake wrist angle", inputs.angle);
         Robot.intakeWristMechanism.setAngle(inputs.angle * 360 - 20);
         // IO.setBrakeMode(RobotState.isEnabled());
@@ -47,7 +47,7 @@ public class IntakeWrist extends SubsystemBase {
 
     public void setState(State.IntakeWrist state) {
         IO.setPosition(state.position);
-        Logger.getInstance().recordOutput("IntakeWrist/State", state.name());
+        //Logger.getInstance().recordOutput("IntakeWrist/State", state.name());
     }
 
     public boolean checkEncoderConnection() {

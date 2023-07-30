@@ -30,7 +30,7 @@ public class IntakeWristIONEO extends SubsystemBase implements IntakeWristIO {
         left.restoreFactoryDefaults();
         right.restoreFactoryDefaults();
 
-        PID = new ProfiledPIDController(2.5, 0, 0.075, new TrapezoidProfile.Constraints(2.5, 6));
+        PID = new ProfiledPIDController(2, 0, 0.075, new TrapezoidProfile.Constraints(2.5, 6));
         PID.reset(State.IntakeWrist.IDLE_IN.position);
         PID.setTolerance(0);
 

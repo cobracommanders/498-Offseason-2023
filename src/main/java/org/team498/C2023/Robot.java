@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -75,6 +76,7 @@ public class Robot extends LoggedRobot {
     private final List<Auto> autoOptions = List.of(
             new MobilityEngageCubeHigh(),
             new MobilityEngageConeMid(),
+            new JustAutoShot(),
             new JustScore(),
             new CubeEngage(),
             new ConeTaxi(),
@@ -93,6 +95,7 @@ public class Robot extends LoggedRobot {
             new ThreeBump(),
             new ThreeBumpEngage(),
             new TestAuto()
+            //new WaitCommand(10)
                                                   );
 
     private final DigitalInput setupSwitch = new DigitalInput(SETUP_SWITCH);
@@ -151,7 +154,7 @@ public class Robot extends LoggedRobot {
 
         logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
-        gyro.setYaw(0);
+        drivetrain.setYaw(0);
 
         FieldPositions.displayAll();
 
@@ -196,14 +199,14 @@ public class Robot extends LoggedRobot {
                              : 180;
         }
 
-        logger.recordOutput("Mechanism2d", mechanism2d);
+        //logger.recordOutput("Mechanism2d", mechanism2d);
 
-        logger.recordOutput("Targets/NextScoringPose", RobotPosition.getNextScoringNodePosition());
-        logger.recordOutput("Targets/FutureScoringPose", RobotPosition.getFutureScoringNodePosition());
-        logger.recordOutput("Targets/FutureRobotPose", RobotPosition.getFuturePose(20));
-        logger.recordOutput("Targets/Distance", RobotPosition.getFutureScoringNodeDistance());
+        //logger.recordOutput("Targets/NextScoringPose", RobotPosition.getNextScoringNodePosition());
+        //logger.recordOutput("Targets/FutureScoringPose", RobotPosition.getFutureScoringNodePosition());
+        //logger.recordOutput("Targets/FutureRobotPose", RobotPosition.getFuturePose(20));
+        //logger.recordOutput("Targets/Distance", RobotPosition.getFutureScoringNodeDistance());
 
-        SmartDashboard.putNumber("Pitch", Gyro.getInstance().getPitch());
+        //SmartDashboard.putNumber("Pitch", Gyro.getInstance().getPitch());
     }
 
     @Override

@@ -59,7 +59,7 @@ public class ReturnToIdle extends ConditionalCommand {
                                         new SetIntakeWristToNextState()),
                                 new SetIntakeRollersToNextState(),
                                 new SetManipulatorToNextState()),
-                        () -> RobotState.getInstance().getNextScoringOption() == ScoringOption.TOP),
+                        () -> false),//RobotState.getInstance().getNextScoringOption() == ScoringOption.TOP),
 
                 new SequentialCommandGroup(
                         new ConditionalCommand(new SetRobotState(State.IDLE_CONE),

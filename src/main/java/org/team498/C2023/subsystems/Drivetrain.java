@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 import org.team498.C2023.Constants;
@@ -92,9 +93,10 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        //SmartDashboard.putNumber("Pitch", gyroInputs.pitch);
         for (int i = 0; i < modules.length; i++) {
             modules[i].updateInputs(moduleInputs[i]);
-            Logger.getInstance().processInputs("Drive/" + modules[i].getName() + "_Module", moduleInputs[i]);
+            //Logger.getInstance().processInputs("Drive/" + modules[i].getName() + "_Module", moduleInputs[i]);
 
             // modules[i].setBrakeMode(RobotState.isEnabled());
 
@@ -103,7 +105,7 @@ public class Drivetrain extends SubsystemBase {
             }
         }
         gyro.updateInputs(gyroInputs);
-        Logger.getInstance().processInputs("Gyro", gyroInputs);
+        //Logger.getInstance().processInputs("Gyro", gyroInputs);
 
         var visionPose = Vision.getInstance().getEstimatedPose();
         visionPose.ifPresent(pose -> {
@@ -111,16 +113,16 @@ public class Drivetrain extends SubsystemBase {
         });
         poseEstimator.update(Rotation2d.fromDegrees(getYaw()), getModulePositions());
         
-        Logger.getInstance().recordOutput("Odometry", getPose());
+        //Logger.getInstance().recordOutput("Odometry", getPose());
         
-        LoggerUtil.recordOutput("Drive/RealStates", getModuleStates());
+        //LoggerUtil.recordOutput("Drive/RealStates", getModuleStates());
 
         if (Constants.mode == Mode.REPLAY) {
             var targetStates = new SwerveModuleState[4];
             for (int i = 0; i < modules.length; i++) {
                 // targetStates[i] = new SwerveModuleState(moduleInputs[i].targetSpeedMetersPerSecond, Rotation2d.fromDegrees(moduleInputs[i].targetAngle));
             }
-            LoggerUtil.recordOutput("Drive/TargetStates", targetStates);
+            //LoggerUtil.recordOutput("Drive/TargetStates", targetStates);
         }
 
         if (Constants.mode == Mode.SIM) {
@@ -157,7 +159,7 @@ public class Drivetrain extends SubsystemBase {
         return states;
     }
 
-    public void setPositionGoal(Pose2d pose) {xController.setSetpoint(pose.getX()); yController.setSetpoint(pose.getY()); setAngleGoal(pose.getRotation().getDegrees()); Logger.getInstance().recordOutput("TargetPose", pose);}
+public void setPositionGoal(Pose2d pose) {xController.setSetpoint(pose.getX()); yController.setSetpoint(pose.getY()); setAngleGoal(pose.getRotation().getDegrees()); /*Logger.getInstance().recordOutput("TargetPose", pose);*/}
     public ChassisSpeeds calculatePositionSpeed() {return new ChassisSpeeds(xController.calculate(getPose().getX()), yController.calculate(getPose().getY()), calculateAngleSpeed());}
     public boolean atPositionGoal() {return (Math.abs(xController.getPositionError()) < PoseConstants.EPSILON) && (Math.abs(yController.getPositionError()) < PoseConstants.EPSILON) && atAngleGoal();}
 

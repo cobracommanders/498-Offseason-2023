@@ -20,12 +20,12 @@ public class IntakeRoller extends SubsystemBase {
     @Override
     public void periodic() {
         IO.updateInputs(inputs);
-        Logger.getInstance().processInputs("IntakeRoller", inputs);
+        //Logger.getInstance().processInputs("IntakeRoller", inputs);
     }
 
     public void setState(State.IntakeRollers state) {
         IO.setSpeed(state.bottomRollerSpeed, state.topRollerSpeed, state.thirdRollerSpeed);
-        Logger.getInstance().recordOutput("IntakeRoller/State", state.name());
+        //Logger.getInstance().recordOutput("IntakeRoller/State", state.name());
     }
 
     /** top, bottom, third */

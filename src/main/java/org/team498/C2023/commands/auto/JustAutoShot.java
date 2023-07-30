@@ -20,12 +20,13 @@ import org.team498.lib.auto.Auto;
 public class JustAutoShot implements Auto {
     @Override
     public Command getCommand() {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
-                new SetManipulatorToNextState(),
-                new WaitCommand(0.5),
-                new ExitAutoShot()
-        );
+        return new WaitCommand(10);
+        // return new SequentialCommandGroup(
+        //         new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
+        //         new SetManipulatorToNextState(),
+        //         new WaitCommand(0.5),
+        //         new ExitAutoShot()
+        // );
     }
 
     @Override
@@ -35,6 +36,6 @@ public class JustAutoShot implements Auto {
 
     @Override
     public State getInitialState() {
-        return State.AUTO_SHOT;
+        return State.IDLE_CUBE;
     }
 }

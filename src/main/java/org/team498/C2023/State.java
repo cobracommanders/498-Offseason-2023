@@ -56,16 +56,16 @@ public enum State {
         CONEARISER_CONE(0),
         CONEARISER_CUBE(0),
         SINGLE_SS(0.16745),
-        DOUBLE_SS(0.6),
+        DOUBLE_SS(0.53),
 
         SPIT(0),
 
-        MID_CONE(0.5),
+        MID_CONE(0.53),//.45
         MID_CUBE(0.5),
 
         LOW_CONE(0.3),
 
-        TOP_CONE(0.875),
+        TOP_CONE(0.58),
         TOP_CUBE( 0.885),
 
         AUTO_SHOT(0),
@@ -97,12 +97,12 @@ public enum State {
 
         LOW_CONE(0),
 
-        MID_CONE(0),
+        MID_CONE(.04),
         // MID_CONE(0.1),
         MID_CUBE(-0.04),
 
         // TOP_CONE(0.25),
-        TOP_CONE(0),
+        TOP_CONE(.1),
         TOP_CUBE(-0.02),
 
         TRAVEL(0.041067),
@@ -156,7 +156,7 @@ public enum State {
         TRAVEL_CUBE(0),
         TEMPORARY_IDLE(0),
         TRAVEL_CONE(0),
-        IDLE_IN(-0.2),
+        IDLE_IN(-0.3),
         OUTTAKE(0.);
 
         public final double position;
@@ -171,7 +171,7 @@ public enum State {
         INTAKE_CUBE(-1),
 
         SPIT(0.9),
-        MID_CONE(1),
+        MID_CONE(.02),
         MID_CUBE(0.5),
         TOP_CONE(1),
         TOP_CUBE(0.5),
@@ -182,7 +182,7 @@ public enum State {
         SHOOT_DRIVE_CUBE_TOP(0),
         SHOOT_DRIVE_CONE_MID(0),
 
-        TRAVEL_CUBE(0),
+        TRAVEL_CUBE(0), //probably needs to be a low value
         IDLE(0);
 
         public final double setpoint;

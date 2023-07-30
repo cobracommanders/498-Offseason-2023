@@ -4,13 +4,24 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.team498.C2023.Ports.Accessories.RioBus;
 import static org.team498.C2023.Ports.Manipulator.*;
 
 public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO {
+    private double currentSpeed = 0;
+    private double currentSpeedRight = 0;
     private final TalonFX lMotor;
     private final TalonFX rMotor;
+    private final PIDController pid = new PIDController(0, 20, 0);
+    private final PIDController pidRight = new PIDController(0, 20, 0);
+
+    SlewRateLimiter limiter = new SlewRateLimiter(6.5, -1000, 0);
+    SlewRateLimiter rlimiter = new SlewRateLimiter(6.5, -1000, 0);
+
+    //new PIDController(1.0 / 2000.0, 0.000, 0);
 
     public ManipulatorIOFALCON() {
         lMotor = new TalonFX(L_ROLLERS, RioBus);
@@ -19,12 +30,13 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
 
         lMotor.setInverted(false);
         lMotor.configFactoryDefault();
-        lMotor.setNeutralMode(NeutralMode.Coast); 
+        lMotor.setNeutralMode(NeutralMode.Brake); 
 
-
-        rMotor.setInverted(true); //setting the motor inputs to follow the left motor but inverted
         rMotor.configFactoryDefault();
-        rMotor.follow(lMotor); 
+        rMotor.setInverted(true); //setting the motor inputs to follow the left motor but inverted
+        
+        rMotor.setNeutralMode(NeutralMode.Brake);
+        //rMotor.follow(lMotor); 
     }
 
     @Override
@@ -35,7 +47,24 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     }
 
     @Override
+    public void periodic() {
+        currentSpeed = pid.calculate(lMotor.getSelectedSensorVelocity() * 10.0 / 2048.0);
+        currentSpeedRight = pidRight.calculate(rMotor.getSelectedSensorVelocity() * 10.0 / 2048.0);
+        currentSpeed = limiter.calculate(currentSpeed);
+        currentSpeedRight = rlimiter.calculate(currentSpeedRight);
+        lMotor.set(TalonFXControlMode.PercentOutput, -currentSpeed);
+        rMotor.set(TalonFXControlMode.PercentOutput, -currentSpeedRight);
+    }
+
+    @Override
     public void setSpeed(double speed) {
-        //lMotor.set(TalonFXControlMode.PercentOutput, .5); //TODO update this eventually
+        double setpoint = speed * 6000;
+        pid.setI((Math.abs(setpoint) > 200) ? 20 * 6000 : 0);
+        pidRight.setI((Math.abs(setpoint) > 200) ? 20 * 6000 : 0);
+        pid.setSetpoint(setpoint * 1);
+        pidRight.setSetpoint(setpoint * 1);
+        //currentSpeed = pid.calculate(lMotor.getSelectedSensorVelocity());
+        //lMotor.follow(rMotor); //TODO update this eventually
+        
     }
 }

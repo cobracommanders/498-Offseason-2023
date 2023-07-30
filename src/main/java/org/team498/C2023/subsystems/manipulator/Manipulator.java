@@ -23,7 +23,7 @@ public class Manipulator extends SubsystemBase {
     @Override
     public void periodic() {
         IO.updateInputs(inputs);
-        Logger.getInstance().processInputs("Manipulator", inputs);
+        //Logger.getInstance().processInputs("Manipulator", inputs);
 
         if (state == State.Manipulator.SHOOT_DRIVE_CUBE_MID || state == State.Manipulator.SHOOT_DRIVE_CUBE_TOP || state == State.Manipulator.SHOOT_DRIVE_CONE_MID) {
             IO.setSpeed(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
@@ -32,7 +32,7 @@ public class Manipulator extends SubsystemBase {
 
     public void setState(State.Manipulator state) {
         IO.setSpeed(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
-        Logger.getInstance().recordOutput("Manipulator/State", state.name());
+        //Logger.getInstance().recordOutput("Manipulator/State", state.name());
         this.state = state;
     }
 
