@@ -82,6 +82,13 @@ public class RobotPosition {
         return closestGrid.getNodePoints()[height][2].toPose2d();
     }
 
+    public static boolean isReadyToScore(Pose2d reference, double refYaw){
+        Pose2d target = getNextScoringNodePosition(reference);
+        Point point = new Point(target.getX(), target.getY());
+        double distance = distanceTo(point, reference);
+        return Math.abs(distance) < Units.inchesToMeters(25);
+    }
+
     private static Transform2d getVelocity(double loopCycles) {
         var currentSpeeds = drivetrain.getCurrentSpeeds();
         return new Transform2d(new Translation2d(

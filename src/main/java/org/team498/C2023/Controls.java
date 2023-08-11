@@ -28,7 +28,7 @@ public class Controls {
     private final RobotState robotState = RobotState.getInstance();
 
     public Controls() {
-        driver.setDeadzone(0.2);
+        driver.setDeadzone(0.15);
         driver.setTriggerThreshold(0.2);
         operator.setDeadzone(0.2);
         operator.setTriggerThreshold(0.2);
@@ -46,7 +46,7 @@ public class Controls {
         driver.leftBumper()
               .onTrue(runOnce(() -> robotState.setState(State.OUTTAKE)).andThen(new GroundIntake()))
               .onFalse(new ReturnToIdle());
-        driver.A().onTrue(runOnce(() -> Gyro.getInstance().setYaw(0)));
+        driver.A().onTrue(runOnce(() -> Drivetrain.getInstance().setYaw(0)));
         driver.B().onTrue(new RealignCone());
 
         driver.rightStick().and(RobotPosition::inCommunity)

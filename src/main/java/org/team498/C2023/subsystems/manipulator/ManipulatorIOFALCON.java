@@ -15,8 +15,6 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     private double currentSpeedRight = 0;
     private final TalonFX lMotor;
     private final TalonFX rMotor;
-    private final PIDController pid = new PIDController(0, 20, 0);
-    private final PIDController pidRight = new PIDController(0, 20, 0);
 
     SlewRateLimiter limiter = new SlewRateLimiter(6.5, -1000, 0);
     SlewRateLimiter rlimiter = new SlewRateLimiter(6.5, -1000, 0);
@@ -48,8 +46,6 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
 
     @Override
     public void periodic() {
-        currentSpeed = pid.calculate(lMotor.getSelectedSensorVelocity() * 10.0 / 2048.0);
-        currentSpeedRight = pidRight.calculate(rMotor.getSelectedSensorVelocity() * 10.0 / 2048.0);
         currentSpeed = limiter.calculate(currentSpeed);
         currentSpeedRight = rlimiter.calculate(currentSpeedRight);
         lMotor.set(TalonFXControlMode.PercentOutput, -currentSpeed);
@@ -58,13 +54,13 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
 
     @Override
     public void setSpeed(double speed) {
-        double setpoint = speed * 6000;
-        pid.setI((Math.abs(setpoint) > 200) ? 20 * 6000 : 0);
-        pidRight.setI((Math.abs(setpoint) > 200) ? 20 * 6000 : 0);
-        pid.setSetpoint(setpoint * 1);
-        pidRight.setSetpoint(setpoint * 1);
-        //currentSpeed = pid.calculate(lMotor.getSelectedSensorVelocity());
-        //lMotor.follow(rMotor); //TODO update this eventually
-        
+        double setpoint = Math.abs(speed) * 11;
+        if(setpoint == 0)setpoint = 9999;
+        limiter = new SlewRateLimiter(setpoint, -9999, currentSpeed);
+        rlimiter = new SlewRateLimiter(setpoint, -9999, currentSpeedRight);
+        if(speed > 0){currentSpeed = 1; currentSpeedRight = 1;}
+        else if(speed < 0){currentSpeed = -1; currentSpeedRight = -1;}
+        else if(speed == 0){currentSpeed = 0; currentSpeedRight = 0;}
+
     }
 }

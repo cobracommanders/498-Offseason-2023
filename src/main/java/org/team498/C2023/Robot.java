@@ -94,7 +94,8 @@ public class Robot extends LoggedRobot {
             new HighHighCubeBump(),
             new ThreeBump(),
             new ThreeBumpEngage(),
-            new TestAuto()
+            new TestAuto(),
+            new HighMidConeEngage()
             //new WaitCommand(10)
                                                   );
 
@@ -241,7 +242,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if ((Math.abs(RotationUtil.toSignedDegrees(Math.abs(drivetrain.getYaw() - RobotPosition.calculateDegreesToTarget(RobotPosition.getNextScoringNodePosition())))) < 3.5) && (RobotPosition.getClosestScoringDistance()) < Units.inchesToMeters(25)) {
+        if (RobotPosition.isReadyToScore(Drivetrain.getInstance().getPose(), 0)){
             blinkin.setColor(BlinkinColor.SOLID_LIME);
             controls.driver.rumble(0.5);
         } else if (robotState.inShootDriveMode() && RobotPosition.inCommunity()) {

@@ -171,7 +171,7 @@ public enum State {
         INTAKE_CUBE(-1),
 
         SPIT(0.9),
-        MID_CONE(.02),
+        MID_CONE(.5),
         MID_CUBE(0.5),
         TOP_CONE(1),
         TOP_CUBE(0.5),
