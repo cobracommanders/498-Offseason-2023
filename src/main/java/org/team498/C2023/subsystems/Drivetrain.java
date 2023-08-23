@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -47,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
     private final SwerveDrivePoseEstimator poseEstimator;
     private SwerveModuleState[] stateSetpoints;
     
-
+    private final Field2d field2d = new Field2d();
     private final GyroIO gyro;
     private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
 
@@ -93,6 +94,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        field2d.setRobotPose(getPose().getX(), getPose().getY(), getPose().getRotation());
+        SmartDashboard.putData(field2d);
         //SmartDashboard.putNumber("Pitch", gyroInputs.pitch);
         for (int i = 0; i < modules.length; i++) {
             modules[i].updateInputs(moduleInputs[i]);

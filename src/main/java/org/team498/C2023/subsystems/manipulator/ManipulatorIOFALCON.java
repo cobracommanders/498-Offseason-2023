@@ -48,8 +48,8 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     public void periodic() {
         currentSpeed = limiter.calculate(currentSpeed);
         currentSpeedRight = rlimiter.calculate(currentSpeedRight);
-        lMotor.set(TalonFXControlMode.PercentOutput, -currentSpeed);
-        rMotor.set(TalonFXControlMode.PercentOutput, -currentSpeedRight);
+        lMotor.set(TalonFXControlMode.PercentOutput, currentSpeed);
+        rMotor.set(TalonFXControlMode.PercentOutput, currentSpeedRight);
     }
 
     @Override
