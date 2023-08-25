@@ -33,7 +33,7 @@ public class ElevatorWrist extends SubsystemBase {
         //Logger.getInstance().processInputs("ElevatorWrist", inputs);
 
         Robot.elevatorWristMechanism.setAngle((inputs.angle - 0.353510) * 360); // - whaatever on 360 based on angle
-        //SmartDashboard.putNumber("elevator wrist angle", inputs.angle);
+        SmartDashboard.putNumber("elevator wrist angle", inputs.angle);
         //Logger.getInstance().recordOutput("ElevatorWrist/Pose", getPose());
 
         // IO.setBrakeMode(RobotState.isEnabled());

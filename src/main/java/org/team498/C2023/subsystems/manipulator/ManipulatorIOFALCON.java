@@ -16,8 +16,8 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     private final TalonFX lMotor;
     private final TalonFX rMotor;
 
-    SlewRateLimiter limiter = new SlewRateLimiter(6.5, -1000, 0);
-    SlewRateLimiter rlimiter = new SlewRateLimiter(6.5, -1000, 0);
+    SlewRateLimiter limiter = new SlewRateLimiter(-6.5, -1000, 0);
+    SlewRateLimiter rlimiter = new SlewRateLimiter(-6.5, -1000, 0);
 
     //new PIDController(1.0 / 2000.0, 0.000, 0);
 

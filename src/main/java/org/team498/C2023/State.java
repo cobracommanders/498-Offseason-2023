@@ -97,7 +97,7 @@ public enum State {
 
         LOW_CONE(0),
 
-        MID_CONE(.04),
+        MID_CONE(.06),
         // MID_CONE(0.1),
         MID_CUBE(-0.04),
 
@@ -171,9 +171,9 @@ public enum State {
         INTAKE_CUBE(-.75),
 
         SPIT(0.9),
-        MID_CONE(.5),
+        MID_CONE(.15),
         MID_CUBE(0.5),
-        TOP_CONE(1),
+        TOP_CONE(.9),
         TOP_CUBE(0.25),
         LOW_CONE(0.75),
 
