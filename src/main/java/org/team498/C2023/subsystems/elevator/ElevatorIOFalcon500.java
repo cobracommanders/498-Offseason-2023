@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 import static org.team498.C2023.Constants.ElevatorConstants.*;
 import static org.team498.C2023.Ports.Elevator.*;
+import static org.team498.C2023.Ports.Accessories.*;
 
 public class ElevatorIOFalcon500 extends SubsystemBase implements ElevatorIO {
     private final TalonFX front;
@@ -29,8 +30,13 @@ public class ElevatorIOFalcon500 extends SubsystemBase implements ElevatorIO {
     private double speed = 0;
 
     public ElevatorIOFalcon500() {
-        front = new TalonFX(F_ELEVATOR_ID);
-        back = new TalonFX(B_ELEVATOR_ID);
+       // front = new TalonFX(F_ELEVATOR_ID);
+       // back = new TalonFX(B_ELEVATOR_ID);
+       front = new TalonFX(F_ELEVATOR_ID, DriveBus);
+       back = new TalonFX(B_ELEVATOR_ID, DriveBus);
+
+
+
 
         configMotor(front);
         configMotor(back);

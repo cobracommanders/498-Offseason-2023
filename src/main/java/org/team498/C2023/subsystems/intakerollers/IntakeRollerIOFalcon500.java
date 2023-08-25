@@ -2,6 +2,7 @@ package org.team498.C2023.subsystems.intakerollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +25,23 @@ public class IntakeRollerIOFalcon500 extends SubsystemBase implements IntakeRoll
         bottom.setNeutralMode(NeutralMode.Coast);
         top.setNeutralMode(NeutralMode.Coast);
         third.setNeutralMode(NeutralMode.Coast);
+
+        bottom.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 50);
+        top.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 50);
+        third.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 50);
+
+
+        top.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 50);
+        bottom.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 50);
+        third.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 50);
+
+        top.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 50);
+        bottom.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 50);
+        third.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 50);
+
+
+
+        
 
         bottom.setInverted(false);
         top.setInverted(false);
