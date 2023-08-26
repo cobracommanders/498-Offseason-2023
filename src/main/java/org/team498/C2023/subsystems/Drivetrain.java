@@ -96,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         field2d.setRobotPose(getPose().getX(), getPose().getY(), getPose().getRotation());
         SmartDashboard.putData(field2d);
-        //SmartDashboard.putNumber("Pitch", gyroInputs.pitch);
+        SmartDashboard.putNumber("Pitch", gyroInputs.pitch);
         for (int i = 0; i < modules.length; i++) {
             modules[i].updateInputs(moduleInputs[i]);
             //Logger.getInstance().processInputs("Drive/" + modules[i].getName() + "_Module", moduleInputs[i]);

@@ -272,7 +272,7 @@ public class Robot extends LoggedRobot {
         if (autoToRun == null)
             autoToRun = new JustScore();
 
-        autoToRun = new MobilityEngageCubeHigh();
+        autoToRun = new JustScore();
 
         if (alliance == Alliance.Blue) {
             Drivetrain.getInstance().setYaw(autoToRun.getInitialPose().getRotation().getDegrees());

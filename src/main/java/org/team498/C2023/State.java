@@ -70,8 +70,8 @@ public enum State {
 
         AUTO_SHOT(0),
 
-        INTAKE(0.),
-        OUTTAKE(0.1),
+        INTAKE(0.05),
+        OUTTAKE(0),
         // INTAKE(0),
 
         IDLE(0),
