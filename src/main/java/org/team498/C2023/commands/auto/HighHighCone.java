@@ -49,13 +49,10 @@ public class HighHighCone implements Auto {
                                 new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
                                 new WaitCommand(1),
                                 new PrepareToScore())),
-                new ParallelCommandGroup(
-                        new Score(),
-                        new SequentialCommandGroup(
-                                new ConditionalCommand(new WaitCommand(0.3), new WaitCommand(0), () -> RobotState.getInstance().inConeMode())))
+                                new Score()
                                 //new PathPlannerFollower(PathLib.secondNodeToChargeStation)))
                 //new AutoEngageBangBang()
-                );
+        );
     }
 
     @Override

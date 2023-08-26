@@ -95,7 +95,7 @@ public class Robot extends LoggedRobot {
             new ThreeBump(),
             new ThreeBumpEngage(),
             new TestAuto(),
-            new HighMidConeEngage()
+            new HighHighCone()
             //new WaitCommand(10)
                                                   );
 
