@@ -63,14 +63,14 @@ public enum State {
         MID_CONE(0.6),//.45
         MID_CUBE(0.4),
 
-        LOW_CONE(0.3),
+        LOW_CONE(0.4),
 
         TOP_CONE(0.58),
         TOP_CUBE( 0.7),
 
         AUTO_SHOT(0),
 
-        INTAKE(0.05),
+        INTAKE(0.02),
         OUTTAKE(0),
         // INTAKE(0),
 
@@ -95,7 +95,7 @@ public enum State {
 
         SPIT(-0.025),
 
-        LOW_CONE(0),
+        LOW_CONE(-0.06),
 
         MID_CONE(.06),
         // MID_CONE(0.1),
@@ -175,7 +175,7 @@ public enum State {
         MID_CUBE(0.4),
         TOP_CONE(.9),
         TOP_CUBE(0.4),
-        LOW_CONE(0.75),
+        LOW_CONE(0.1),
 
         AUTO_SHOT(0.5),
         SHOOT_DRIVE_CUBE_MID(0),

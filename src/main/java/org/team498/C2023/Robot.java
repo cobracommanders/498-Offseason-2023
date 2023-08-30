@@ -270,9 +270,9 @@ public class Robot extends LoggedRobot {
         matchStarted = true;
 
         if (autoToRun == null)
-            autoToRun = new JustScore();
+            autoToRun = new HighHighCone();
 
-        autoToRun = new JustScore();
+        autoToRun = new HighHighCone();
 
         if (alliance == Alliance.Blue) {
             Drivetrain.getInstance().setYaw(autoToRun.getInitialPose().getRotation().getDegrees());

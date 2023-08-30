@@ -25,7 +25,7 @@ public class ConeTaxi implements Auto {
     public Command getCommand() {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CONE)),
-                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.MID)),
+                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
                 new FullScore(),
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(

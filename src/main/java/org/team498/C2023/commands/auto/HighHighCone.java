@@ -14,6 +14,7 @@ import org.team498.C2023.commands.robot.GroundIntake;
 import org.team498.C2023.commands.robot.PrepareToScore;
 import org.team498.C2023.commands.robot.ReturnToIdle;
 import org.team498.C2023.commands.robot.Score;
+import org.team498.C2023.commands.robot.VerifyScoreLocation;
 import org.team498.lib.auto.Auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -47,8 +48,10 @@ public class HighHighCone implements Auto {
                                 new ReturnToIdle(),
                                 new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
                                 new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
-                                new WaitCommand(1),
                                 new PrepareToScore())),
+                                new WaitCommand(.3),
+                                new VerifyScoreLocation(),
+                                new VerifyScoreLocation(),
                                 new Score()
                                 //new PathPlannerFollower(PathLib.secondNodeToChargeStation)))
                 //new AutoEngageBangBang()
