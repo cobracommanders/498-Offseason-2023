@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.AutoLog;
 
 // Credit to team 8177 for inspiring this class
 public interface VisionIO {
-    @AutoLog
     class VisionIOInputs {
         public boolean connected = false;
         public byte[] targetData = {};

@@ -52,38 +52,50 @@ import java.util.Optional;
 
 // Credit to team 8177 for inspiring this class
 public class Vision extends SubsystemBase implements VisionIO {
-    private final VisionIO IO;
-    private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
-    private PhotonPoseEstimator photonPoseEstimator;
+    private final VisionIO rightCamera;
+    private final VisionIO leftCamera;
+    private VisionIOInputs rightInputs;
+    private VisionIOInputs leftInputs;
+    private PhotonPoseEstimator rightPoseEstimator;
+    private PhotonPoseEstimator leftPoseEstimator;
 
-    private final Transform3d cameraPose = new Transform3d(
+    private final Transform3d rightCameraPose = new Transform3d(
             new Translation3d(Units.inchesToMeters(2.5),
                     -Units.inchesToMeters(5.6875),
                     Units.inchesToMeters(22)),
             new Rotation3d());
 
+            private final Transform3d leftCameraPose = new Transform3d(
+            new Translation3d(Units.inchesToMeters(2.5),
+                    Units.inchesToMeters(5.6875),
+                    Units.inchesToMeters(22)),
+            new Rotation3d());
+
     private Vision() {
         PhotonCamera.setVersionCheckEnabled(false);
-        IO = switch (Constants.mode) {
-            case REAL, REPLAY -> new VisionIOSingleCamera();
-            case SIM -> new VisionIO() {
-            };
-        };
+        rightCamera = new VisionIOSingleCamera();
+        leftCamera = new VisionIOSingleCamera();
+        rightInputs = new VisionIOInputs();
+        leftInputs = new VisionIOInputs();
 
         try {
             // Attempt to load the AprilTagFieldLayout that will tell us where the tags are
             // on the field.
             AprilTagFieldLayout fieldLayout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
             // Create pose estimator
-            photonPoseEstimator = new PhotonPoseEstimator(fieldLayout,
+            rightPoseEstimator = new PhotonPoseEstimator(fieldLayout,
                     PoseStrategy.MULTI_TAG_PNP,
-                    cameraPose);
-            photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+                    rightCameraPose);
+            rightPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+            leftPoseEstimator = new PhotonPoseEstimator(fieldLayout,
+                    PoseStrategy.MULTI_TAG_PNP,
+                    leftCameraPose);
+            leftPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         } catch (IOException e) {
             // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if
             // we don't know where the tags are.
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
-            photonPoseEstimator = null;
+            rightPoseEstimator = null;
         }
     }
 
@@ -91,18 +103,18 @@ public class Vision extends SubsystemBase implements VisionIO {
      * @return an EstimatedRobotPose with an estimated pose, the timestamp, and
      *         targets used to create the estimate
      */
-    public Optional<EstimatedRobotPose> getEstimatedPose() {
-        if (photonPoseEstimator == null) {
+    public Optional<EstimatedRobotPose> rightEstimatedPose() {
+        if (rightPoseEstimator == null) {
             return Optional.empty();
         }
 
         // photonPoseEstimator.setReferencePose(Drivetrain.getInstance().getPose());
-        PhotonPipelineResult result = getPhotonPipelineResult();
+        PhotonPipelineResult result = rightPipelineResult();
 
-        var estimatedPosition = photonPoseEstimator.update(
+        var estimatedPosition = rightPoseEstimator.update(
                 result,
-                inputs.cameraMatrixData,
-                inputs.distanceCoefficientData);
+                rightInputs.cameraMatrixData,
+                rightInputs.distanceCoefficientData);
 
         if (estimatedPosition.isPresent()) {
             List<PhotonTrackedTarget> targets = estimatedPosition.get().targetsUsed;
@@ -111,20 +123,7 @@ public class Vision extends SubsystemBase implements VisionIO {
                 return Optional.empty();
             }
 
-            Logger.getInstance().recordOutput("Vision/EstimatedPose", PoseUtil.toPose2d(estimatedPosition.get().estimatedPose));
-
-            if (Constants.mode == Mode.REPLAY) {
-                var allCorners = new LinkedList<TargetCorner>();
-                for (var target : targets) {
-                    Logger.getInstance().recordOutput("Vision/Targets/" + target.getFiducialId() + "/Pose",
-                            FieldPositions.aprilTags.get(target.getFiducialId()));
-
-                    allCorners.addAll(target.getDetectedCorners());
-                }
-                var corners = targetCornerToDoubleArray(allCorners);
-                Logger.getInstance().recordOutput("Vision/Targets/Corners/x", corners[0]);
-                Logger.getInstance().recordOutput("Vision/Targets/Corners/y", corners[1]);
-            }
+           
         }
         return estimatedPosition;
     }
@@ -140,19 +139,19 @@ public class Vision extends SubsystemBase implements VisionIO {
         return output;
     }
 
-    public PhotonPipelineResult getPhotonPipelineResult() {
+    public PhotonPipelineResult rightPipelineResult() {
         PhotonPipelineResult result = new PhotonPipelineResult();
-        if (inputs.targetData.length != 0) {
-            result.createFromPacket(new Packet(inputs.targetData));
-            result.setTimestampSeconds(inputs.targetTimestamp);
+        if (rightInputs.targetData.length != 0) {
+            result.createFromPacket(new Packet(rightInputs.targetData));
+            result.setTimestampSeconds(rightInputs.targetTimestamp);
         }
         return result;
     }
 
     @Override
     public void periodic() {
-        IO.updateInputs(inputs);
-        Logger.getInstance().processInputs("Vision", inputs);
+        rightCamera.updateInputs(rightInputs);
+        leftCamera.updateInputs(leftInputs);
     }
 
     private static Vision instance;
