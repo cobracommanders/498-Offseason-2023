@@ -110,7 +110,7 @@ public class Drivetrain extends SubsystemBase {
         gyro.updateInputs(gyroInputs);
         //Logger.getInstance().processInputs("Gyro", gyroInputs);
 
-        var visionPose = Vision.getInstance().rightEstimatedPose();
+        var visionPose = Vision.getInstance().getEstimatedPose();
         visionPose.ifPresent(pose -> {
             poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
         });

@@ -73,8 +73,8 @@ public class Vision extends SubsystemBase implements VisionIO {
 
     private Vision() {
         PhotonCamera.setVersionCheckEnabled(false);
-        rightCamera = new VisionIOSingleCamera();
-        leftCamera = new VisionIOSingleCamera();
+        rightCamera = new VisionIOSingleCamera("Arducam_OV9281_USB_Camera");
+        leftCamera = new VisionIOSingleCamera("Arducam_OV9281_USB_Camera_2");
         rightInputs = new VisionIOInputs();
         leftInputs = new VisionIOInputs();
 
@@ -104,7 +104,7 @@ public class Vision extends SubsystemBase implements VisionIO {
      *         targets used to create the estimate
      */
     public Optional<EstimatedRobotPose> rightEstimatedPose() {
-        if (rightPoseEstimator == null) {
+        if (rightPoseEstimator == null || !rightInputs.enabled) {
             return Optional.empty();
         }
 
@@ -115,6 +115,31 @@ public class Vision extends SubsystemBase implements VisionIO {
                 result,
                 rightInputs.cameraMatrixData,
                 rightInputs.distanceCoefficientData);
+
+        if (estimatedPosition.isPresent()) {
+            List<PhotonTrackedTarget> targets = estimatedPosition.get().targetsUsed;
+
+            if (targets.size() == 1 && targets.get(0).getPoseAmbiguity() > 0.05) {
+                return Optional.empty();
+            }
+
+           
+        }
+        return estimatedPosition;
+    }
+
+    public Optional<EstimatedRobotPose> leftEstimatedPose() {
+        if (leftPoseEstimator == null || !leftInputs.enabled) {
+            return Optional.empty();
+        }
+
+        // photonPoseEstimator.setReferencePose(Drivetrain.getInstance().getPose());
+        PhotonPipelineResult result = leftPipelineResult();
+
+        var estimatedPosition = leftPoseEstimator.update(
+                result,
+                leftInputs.cameraMatrixData,
+                leftInputs.distanceCoefficientData);
 
         if (estimatedPosition.isPresent()) {
             List<PhotonTrackedTarget> targets = estimatedPosition.get().targetsUsed;
@@ -146,12 +171,49 @@ public class Vision extends SubsystemBase implements VisionIO {
             result.setTimestampSeconds(rightInputs.targetTimestamp);
         }
         return result;
+        
+    }
+
+    public PhotonPipelineResult leftPipelineResult() {
+        PhotonPipelineResult result = new PhotonPipelineResult();
+        if (leftInputs.targetData.length != 0) {
+            result.createFromPacket(new Packet(leftInputs.targetData));
+            result.setTimestampSeconds(leftInputs.targetTimestamp);
+        }
+        return result;
     }
 
     @Override
     public void periodic() {
         rightCamera.updateInputs(rightInputs);
         leftCamera.updateInputs(leftInputs);
+    }
+    public void setEnabled(boolean right, boolean left) {
+        rightInputs.enabled = right;
+        leftInputs.enabled = left;
+    }
+
+    public Optional<EstimatedRobotPose> getEstimatedPose(){
+        Optional<EstimatedRobotPose> lPose2d = leftEstimatedPose();
+        Optional<EstimatedRobotPose> rPose2d = rightEstimatedPose();
+        if (lPose2d.isEmpty() && rPose2d.isEmpty()) {
+            return Optional.empty();
+        } else if (lPose2d.isEmpty()) {
+            return rPose2d;
+        } else if (rPose2d.isEmpty()) {
+            return lPose2d;
+        } else{
+            Transform2d left = new Transform2d(new Pose2d(), toPose2d(lPose2d.get()));
+            Transform2d right = new Transform2d(new Pose2d(), toPose2d(rPose2d.get()));
+            Transform2d avg = right.plus(left).div(2);
+            List<PhotonTrackedTarget> targets = List.copyOf(lPose2d.get().targetsUsed);
+            targets.addAll(rPose2d.get().targetsUsed);
+            return Optional.of(new EstimatedRobotPose(new Pose3d(PoseUtil.toPose2d(avg)), lPose2d.get().timestampSeconds, targets));
+        }
+    }
+    private Pose2d toPose2d(EstimatedRobotPose pose) {
+        Pose3d initial = pose.estimatedPose;
+        return PoseUtil.toPose2d(initial);
     }
 
     private static Vision instance;
