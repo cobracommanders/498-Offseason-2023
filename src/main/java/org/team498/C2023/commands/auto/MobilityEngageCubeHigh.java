@@ -28,7 +28,7 @@ public class MobilityEngageCubeHigh implements Auto {
     @Override
     public Command getCommand() {
         return new SequentialCommandGroup(
-                new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
+                new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CONE)),
                 new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
                 new FullScore(),
                 new InstantCommand(() -> drivetrain.setAngleGoal(180 - Robot.rotationOffset)),

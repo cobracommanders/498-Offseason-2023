@@ -18,7 +18,7 @@ public class VisionIOSingleCamera implements VisionIO {
             PhotonPipelineResult latestResult = photonCamera.getLatestResult();
             inputs.targetData = latestResult.populatePacket(new Packet(latestResult.getPacketSize())).getData();
             inputs.targetTimestamp = photonCamera.getLatestResult().getTimestampSeconds();
-
+            inputs.ambiguity = latestResult.getBestTarget().getPoseAmbiguity();
             var matrixData = photonCamera.getCameraMatrix();
             inputs.cameraMatrixData = matrixData.isPresent() ? matrixData.get().getData() : new double[] {};
 

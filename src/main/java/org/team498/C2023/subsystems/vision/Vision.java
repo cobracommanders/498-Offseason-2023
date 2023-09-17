@@ -196,6 +196,12 @@ public class Vision extends SubsystemBase implements VisionIO {
     public Optional<EstimatedRobotPose> getEstimatedPose(){
         Optional<EstimatedRobotPose> lPose2d = leftEstimatedPose();
         Optional<EstimatedRobotPose> rPose2d = rightEstimatedPose();
+        if (leftInputs.ambiguity > 0.2){
+            lPose2d = Optional.empty();
+        }
+        if (rightInputs.ambiguity > 0.2){
+            rPose2d = Optional.empty();
+        }
         if (lPose2d.isEmpty() && rPose2d.isEmpty()) {
             return Optional.empty();
         } else if (lPose2d.isEmpty()) {
