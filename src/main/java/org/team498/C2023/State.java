@@ -107,7 +107,7 @@ public enum State {
 
         TRAVEL(0.041067),
 
-        INTAKE(-0.06),
+        INTAKE(-0.06), 
         // INTAKE(-0.03),
         OUTTAKE(-0.06),
 
