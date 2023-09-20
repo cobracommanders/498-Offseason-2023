@@ -15,9 +15,9 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
     private double currentSpeedRight = 0;
     private final TalonFX lMotor;
     private final TalonFX rMotor;
+    private PIDController  PIDController = new PIDController(1.0 / 2000.0, 0.000, 0);
 
     SlewRateLimiter limiter = new SlewRateLimiter(6.5, -1000, 0);
-    SlewRateLimiter rlimiter = new SlewRateLimiter(6.5, -1000, 0);
 
     //new PIDController(1.0 / 2000.0, 0.000, 0);
 
@@ -46,8 +46,8 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
 
     @Override
     public void periodic() {
-        currentSpeed = limiter.calculate(currentSpeed);
-        currentSpeedRight = rlimiter.calculate(currentSpeedRight);
+        PIDController.setSetpoint(limiter.calculate(currentSpeed));
+        currentSpeed = PIDController.calculate(lMotor.getSelectedSensorVelocity());
         lMotor.set(TalonFXControlMode.PercentOutput, currentSpeed);
         rMotor.set(TalonFXControlMode.PercentOutput, currentSpeedRight);
     }
@@ -57,7 +57,6 @@ public class ManipulatorIOFALCON extends SubsystemBase implements ManipulatorIO 
         double setpoint = Math.abs(speed) * 11;
         if(setpoint == 0)setpoint = 9999;
         limiter = new SlewRateLimiter(setpoint, -9999, currentSpeed);
-        rlimiter = new SlewRateLimiter(setpoint, -9999, currentSpeedRight);
         if(speed > 0){currentSpeed = 1; currentSpeedRight = 1;}
         else if(speed < 0){currentSpeed = -1; currentSpeedRight = -1;}
         else if(speed == 0){currentSpeed = 0; currentSpeedRight = 0;}
