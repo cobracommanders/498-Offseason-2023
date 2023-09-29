@@ -16,6 +16,8 @@ import org.team498.C2023.commands.robot.Score;
 import org.team498.C2023.commands.robot.VerifyScoreLocation;
 import org.team498.lib.auto.Auto;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -24,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class HighMidCube implements Auto {
+public class HighMidHighCube implements Auto {
     @Override
     public Command getCommand() {
         return new SequentialCommandGroup(
@@ -50,7 +52,29 @@ public class HighMidCube implements Auto {
                                 new WaitCommand(1),
                                 new PrepareToScore())),
                 new VerifyScoreLocation(),
-                new Score());
+                new Score(),
+                //new WaitCommand(0.1),
+                new ParallelCommandGroup(
+                        new PathPlannerFollower(PathLib.secondNodeToSecondCube),
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new ReturnToIdle(),
+                                        new WaitCommand(2)),
+                                new SetRobotState(State.INTAKE),
+                                new GroundIntake())),
+                new WaitCommand(0.1),
+                new ReturnToIdle(),
+                new ParallelCommandGroup(
+                    new PathPlannerFollower(PathLib.secondCubeToFifthNode),
+                    new SequentialCommandGroup(
+                        new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
+                        new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.MID)),
+                        new WaitCommand(3.5),
+                        new PrepareToScore())),
+                new VerifyScoreLocation(),
+                new Score()
+
+        );
     }
 
     @Override
@@ -63,3 +87,4 @@ public class HighMidCube implements Auto {
         return State.IDLE_CUBE;
     }
 }
+

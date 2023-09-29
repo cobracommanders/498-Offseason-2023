@@ -95,7 +95,8 @@ public class Robot extends LoggedRobot {
             new ThreeBump(),
             new ThreeBumpEngage(),
             new TestAuto(),
-            new HighHighCone()
+            new HighHighCone(),
+            new HighMidHighCube()
             //new WaitCommand(10)
                                                   );
 
@@ -244,7 +245,7 @@ public class Robot extends LoggedRobot {
     public void teleopPeriodic() {
         if (RobotPosition.isReadyToScore(Drivetrain.getInstance().getPose(), 0)){
             blinkin.setColor(BlinkinColor.SOLID_LIME);
-            controls.driver.rumble(0.5);
+            //controls.driver.rumble(0.5);
         } else if (robotState.inShootDriveMode() && RobotPosition.inCommunity()) {
             blinkin.setColor(BlinkinColor.LIGHT_CHASE_RED);
         } else {
@@ -270,9 +271,9 @@ public class Robot extends LoggedRobot {
         matchStarted = true;
 
         if (autoToRun == null)
-            autoToRun = new HighHighCone();
+            autoToRun = new JustScore();
 
-        autoToRun = new HighHighCone();
+        autoToRun = autoChooser.get();
 
         if (alliance == Alliance.Blue) {
             Drivetrain.getInstance().setYaw(autoToRun.getInitialPose().getRotation().getDegrees());

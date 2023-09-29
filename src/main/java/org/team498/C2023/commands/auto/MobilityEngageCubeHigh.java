@@ -36,8 +36,8 @@ public class MobilityEngageCubeHigh implements Auto {
                         new SimpleDrive(() -> -1.5 * Robot.coordinateFlip, () -> 0,
                                 () -> Drivetrain.getInstance().calculateAngleSpeed()),
                         new SequentialCommandGroup(
-                                new WaitUntilCommand(() -> Math.abs(gyro.getPitch()) > 7),
-                                new WaitUntilCommand(() -> Math.abs(gyro.getPitch()) < 1.5),
+                                new WaitUntilCommand(() -> Math.abs(gyro.getPitch()) > 6),
+                                new WaitUntilCommand(() -> Math.abs(gyro.getPitch()) < 2.5),
                                 new WaitCommand(0.6),
                                 new InstantCommand(drivetrain::stop))),
                 new ParallelRaceGroup(

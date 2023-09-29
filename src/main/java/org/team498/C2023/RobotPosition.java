@@ -84,9 +84,10 @@ public class RobotPosition {
 
     public static boolean isReadyToScore(Pose2d reference, double refYaw){
         Pose2d target = getNextScoringNodePosition(reference);
-        Point point = new Point(target.getX(), target.getY());
-        double distance = distanceTo(point, reference);
-        return Math.abs(distance) < Units.inchesToMeters(25);
+        return isNear(target, Units.inchesToMeters(25));
+        // Point point = new Point(target.getX(), target.getY());
+        // double distance = distanceTo(point, reference);
+        // return Math.abs(distance) < Units.inchesToMeters(25);
     }
 
     private static Transform2d getVelocity(double loopCycles) {

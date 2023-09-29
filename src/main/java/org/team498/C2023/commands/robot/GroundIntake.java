@@ -14,12 +14,14 @@ import org.team498.C2023.commands.manipulator.SetManipulatorToNextState;
 public class GroundIntake extends SequentialCommandGroup {
     public GroundIntake() {
         super(
+            new ParallelCommandGroup(
                 new SetElevatorToNextState(),
-                new SetElevatorWristToNextState(),
-                new SetIntakeWristToNextState(),
-                new SetIntakeRollersToNextState(),
-                new WaitCommand(.15),
-                new SetManipulatorToNextState()
+                new SetElevatorWristToNextState()
+            ),  
+            new SetIntakeWristToNextState(),
+            new SetIntakeRollersToNextState(),
+            new WaitCommand(.15),
+            new SetManipulatorToNextState()
         );
     }
 }

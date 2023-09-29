@@ -51,7 +51,7 @@ public final class Ports {
     }
 
     public static class Accessories {
-        public static final int BLINKIN = 9; // PWM
+        public static final int BLINKIN = 7; // PWM
         public static final int SETUP_SWITCH = 8; //DIO
         public static final String DriveBus = "bus"; //Canivore's name
         public static final String RioBus =  "rio"; //Name of the native bus on the roborio

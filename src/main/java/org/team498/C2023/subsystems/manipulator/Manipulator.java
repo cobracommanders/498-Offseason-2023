@@ -31,7 +31,8 @@ public class Manipulator extends SubsystemBase {
     }
 
     public void setState(State.Manipulator state) {
-        IO.setSpeed(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
+        //IO.setSpeed(getSetpoint(state, RobotPosition.getFutureScoringNodeDistance()));
+        IO.setSpeed(state.setpoint);
         //Logger.getInstance().recordOutput("Manipulator/State", state.name());
         this.state = state;
     }

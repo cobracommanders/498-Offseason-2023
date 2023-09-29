@@ -110,12 +110,12 @@ public class Drivetrain extends SubsystemBase {
         gyro.updateInputs(gyroInputs);
         //Logger.getInstance().processInputs("Gyro", gyroInputs);
 
+        
+        poseEstimator.update(Rotation2d.fromDegrees(getYaw()), getModulePositions());
         var visionPose = Vision.getInstance().rightEstimatedPose();
         visionPose.ifPresent(pose -> {
             poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
         });
-        poseEstimator.update(Rotation2d.fromDegrees(getYaw()), getModulePositions());
-        
         //Logger.getInstance().recordOutput("Odometry", getPose());
         
         //LoggerUtil.recordOutput("Drive/RealStates", getModuleStates());

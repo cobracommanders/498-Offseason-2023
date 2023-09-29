@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -33,11 +34,12 @@ public class HighHighCone implements Auto {
                 new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
                 new FullScore(),
                 new SetRobotState(State.INTAKE),
-                new ParallelCommandGroup(
-                        new PathPlannerFollower(PathLib.firstNodeToTopCube),
-                        new SequentialCommandGroup(
-                                new WaitCommand(2),
-                                new GroundIntake())),
+                new ParallelRaceGroup(
+                    new SequentialCommandGroup(
+                                new WaitCommand(26),
+                                new GroundIntake()),
+                        new PathPlannerFollower(PathLib.firstNodeToTopCube)),
+                        
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                             new PathPlannerFollower(PathLib.topCubeToSecondNode),

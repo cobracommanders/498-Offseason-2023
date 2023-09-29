@@ -56,16 +56,16 @@ public enum State {
         CONEARISER_CONE(0),
         CONEARISER_CUBE(0),
         SINGLE_SS(0.16745),
-        DOUBLE_SS(0.55),
+        DOUBLE_SS(0.534),
 
         SPIT(0),
 
-        MID_CONE(0.6),//.45
-        MID_CUBE(0.4),
+        MID_CONE(0.39),//.45
+        MID_CUBE(0.43),
 
         LOW_CONE(0.4),
 
-        TOP_CONE(0.58),
+        TOP_CONE(0.79),//0.7
         TOP_CUBE( 0.7),
 
         AUTO_SHOT(0),
@@ -74,7 +74,7 @@ public enum State {
         OUTTAKE(0),
         // INTAKE(0),
 
-        IDLE(0),
+        IDLE(0),   
 
         UNSTICK_CUBE(0.4),
 
@@ -97,12 +97,12 @@ public enum State {
 
         LOW_CONE(-0.06),
 
-        MID_CONE(.06),
+        MID_CONE(.075),
         // MID_CONE(0.1),
         MID_CUBE(-0.04),
 
         // TOP_CONE(0.25),
-        TOP_CONE(.1),
+        TOP_CONE(.035),//0.075
         TOP_CUBE(0),
 
         TRAVEL(0.041067),
@@ -171,9 +171,9 @@ public enum State {
         INTAKE_CUBE(-.75),
 
         SPIT(0.9),
-        MID_CONE(.1),
+        MID_CONE(.08),
         MID_CUBE(0.4),
-        TOP_CONE(.9),
+        TOP_CONE(4),
         TOP_CUBE(0.4),
         LOW_CONE(0.1),
 

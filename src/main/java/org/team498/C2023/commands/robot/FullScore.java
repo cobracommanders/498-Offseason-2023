@@ -12,8 +12,8 @@ public class FullScore extends SequentialCommandGroup {
             new PrepareToScore(),
             new ConditionalCommand(new WaitCommand(0.3), new WaitCommand(.3), () -> RobotState.getInstance().inConeMode()),
             new VerifyScoreLocation(),
-            new VerifyScoreLocation(),
-            new VerifyScoreLocation()
+            // new VerifyScoreLocation(),
+            // new VerifyScoreLocation(),
             new Score());
     }
 }
