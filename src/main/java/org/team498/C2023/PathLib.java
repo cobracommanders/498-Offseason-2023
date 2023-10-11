@@ -26,10 +26,22 @@ public class PathLib {
     public static final PathPlannerTrajectory eigthNodeToThirdCube = Trajectories.getPathPlannerTrajectory("Eigth Node To Third Cube");
     public static final PathPlannerTrajectory fourthCubeToFithNode = Trajectories.getPathPlannerTrajectory("Fourth Cube To Fith Node");
     public static final PathPlannerTrajectory thirdCubeToEigthNode = Trajectories.getPathPlannerTrajectory("Third Cube To Eigth Node");
-    public static final PathPlannerTrajectory thirdCubeToChargeStation = Trajectories.getPathPlannerTrajectory("Third Cube To Charge Station");
+    public static final PathPlannerTrajectory thirdCubeToChargeStation = Trajectories.getPathPlannerTrajectory("Third Cube To Charge Station", 3, 2);
     public static final PathPlannerTrajectory secondCubeToFifthNode = Trajectories.getPathPlannerTrajectory("Second Cube To Fifth Node");
 
     public static final PathPlannerTrajectory topCubeToFithNode = Trajectories.getPathPlannerTrajectory("Top Cube To Fith Node");
 
     public static final PathPlannerTrajectory mobilityEngage = Trajectories.getPathPlannerTrajectory("Mobility Engage");
+
+    public static final PathPlannerTrajectory ninthNodeToFourthCube = Trajectories.getPathPlannerTrajectory("Ninth Node To Fourth Cube");
+
+    public static final PathPlannerTrajectory sixthNodeToThirdCubeToChargeStation = Trajectories.getPathPlannerTrajectory("Sixth Node To Third Cube To Charge Station");
+    public static final PathPlannerTrajectory thirdCubeToFifthNode = Trajectories.getPathPlannerTrajectory("Third Cube To Fifth Node");
+    public static final PathPlannerTrajectory fifthNodeToThirdCubeMiddle = Trajectories.getPathPlannerTrajectory("Fifth Node To Third Cube Middle");
+    public static final PathPlannerTrajectory fifthNodeMiddle = Trajectories.getPathPlannerTrajectory("Fifth Node Middle", 2, 1);
+    public static final PathPlannerTrajectory thirdCubeMiddle = Trajectories.getPathPlannerTrajectory("Third Cube Middle");
+    public static final PathPlannerTrajectory eigthNodeToThirdCubeBB = Trajectories.getPathPlannerTrajectory("Eigth Node To Third Cube BB");
+    public static final PathPlannerTrajectory ninthNodeToFourthCubeBB = Trajectories.getPathPlannerTrajectory("Ninth Node To Fourth Cube BB");
+    public static final PathPlannerTrajectory fourthCubeToEighthNodeBB = Trajectories.getPathPlannerTrajectory("Fourth Cube To Eighth Node BB");
+    public static final PathPlannerTrajectory thirdCubeToEighthNodeBB = Trajectories.getPathPlannerTrajectory("Third Cube To Eighth Node BB");
 }

@@ -24,6 +24,10 @@ public class Trajectories {
 
     public static PathPlannerTrajectory getPathPlannerTrajectory(String name) {
         // return PathPlanner.loadPath(name, 3, 2.4);
-        return PathPlanner.loadPath(name, 5, 3);
+        return PathPlanner.loadPath(name, 4.6, 4);//max acccel 5
+    }
+    public static PathPlannerTrajectory getPathPlannerTrajectory(String name, double maxAccel, double maxVel) {
+        // return PathPlanner.loadPath(name, 3, 2.4);
+        return PathPlanner.loadPath(name, maxVel, maxAccel);
     }
 }

@@ -56,16 +56,16 @@ public enum State {
         CONEARISER_CONE(0),
         CONEARISER_CUBE(0),
         SINGLE_SS(0.16745),
-        DOUBLE_SS(0.534),
+        DOUBLE_SS(0.55),
 
         SPIT(0),
 
-        MID_CONE(0.39),//.45
-        MID_CUBE(0.43),
+        MID_CONE(0.35),//.45
+        MID_CUBE(0.48),
 
         LOW_CONE(0.4),
 
-        TOP_CONE(0.79),//0.7
+        TOP_CONE(0.675),//0.7
         TOP_CUBE( 0.7),
 
         AUTO_SHOT(0),
@@ -102,12 +102,12 @@ public enum State {
         MID_CUBE(-0.04),
 
         // TOP_CONE(0.25),
-        TOP_CONE(.035),//0.075
+        TOP_CONE(.075),//0.075
         TOP_CUBE(0),
 
         TRAVEL(0.041067),
 
-        INTAKE(-0.06),
+        INTAKE(-0.05),
         // INTAKE(-0.03),
         OUTTAKE(-0.06),
 
@@ -150,7 +150,7 @@ public enum State {
     }
 
     public enum IntakeWrist {
-        INTAKE(0),
+        INTAKE(-0.1),
         SPIT(0),
         IDLE_OUT(0),
         TRAVEL_CUBE(0),
@@ -171,9 +171,9 @@ public enum State {
         INTAKE_CUBE(-.75),
 
         SPIT(0.9),
-        MID_CONE(.08),
+        MID_CONE(.0025),
         MID_CUBE(0.4),
-        TOP_CONE(4),
+        TOP_CONE(2.3),
         TOP_CUBE(0.4),
         LOW_CONE(0.1),
 
@@ -188,7 +188,7 @@ public enum State {
         public final double setpoint;
 
         Manipulator(double setpoint) {
-            this.setpoint = setpoint;
+            this.setpoint = setpoint; 
         }
     }
 }

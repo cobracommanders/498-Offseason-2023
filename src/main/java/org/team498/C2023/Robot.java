@@ -86,17 +86,22 @@ public class Robot extends LoggedRobot {
             new TwoPlusOneBump(),
             new HighMidCubeEngage(),
             new HighMidCubeEngageBump(),
-            new HighMidCube(),
-            new HighMidCubeBump(),
+            //new HighMidCube(),
+            //new HighMidCubeBump(),
             new HighHighCubeEngage(),
             new HighHighCubeEngageBump(),
-            new HighHighCube(),
-            new HighHighCubeBump(),
+            //new HighHighCube(),
+            //new HighHighCubeBump(),
             new ThreeBump(),
             new ThreeBumpEngage(),
-            new TestAuto(),
+            //new TestAuto(),
             new HighHighCone(),
-            new HighMidHighCube()
+            new HighMidHighCube(),
+            new HighHighMidConeBump(),
+            new HighCubeEngagePlusOne(),
+            new HighHighHighConeBump(),
+            new HighHighMidConeBumpBB()
+            //new HighLowConeMobilityEngage()
             //new WaitCommand(10)
                                                   );
 
