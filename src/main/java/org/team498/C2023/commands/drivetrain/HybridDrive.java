@@ -10,23 +10,26 @@ import java.util.function.DoubleSupplier;
 import static org.team498.C2023.Constants.DrivetrainConstants.AngleConstants.MAX_ANGULAR_SPEED_DEGREES_PER_SECOND;
 import static org.team498.C2023.Constants.DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND;
 
-public class DefenseDrive extends CommandBase {
+public class HybridDrive extends CommandBase {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
 
     private final DoubleSupplier xTranslationSupplier;
     private final DoubleSupplier yTranslationSupplier;
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier slowDriveSupplier;
+    private final DoubleSupplier povAngle;
     private double desiredAngle;
 
-    public DefenseDrive(DoubleSupplier xTranslationSupplier,
+    public HybridDrive(DoubleSupplier xTranslationSupplier,
                         DoubleSupplier yTranslationSupplier,
                         DoubleSupplier rotationSupplier,
+                        DoubleSupplier povAngle,
                         BooleanSupplier slowDriveSupplier) {
         this.xTranslationSupplier = xTranslationSupplier;
         this.yTranslationSupplier = yTranslationSupplier;
         this.rotationSupplier = rotationSupplier;
         this.slowDriveSupplier = slowDriveSupplier;
+        this.povAngle = povAngle;
 
         addRequirements(drivetrain);
     }
@@ -43,15 +46,23 @@ public class DefenseDrive extends CommandBase {
                        : 1;
         double xTranslation = xTranslationSupplier.getAsDouble() * MAX_VELOCITY_METERS_PER_SECOND * Robot.coordinateFlip * speed;
         double yTranslation = yTranslationSupplier.getAsDouble() * MAX_VELOCITY_METERS_PER_SECOND * Robot.coordinateFlip * speed;
-        double rotation = rotationSupplier.getAsDouble() * MAX_ANGULAR_SPEED_DEGREES_PER_SECOND * speed;
+        double rotation = Math.copySign(Math.pow(rotationSupplier.getAsDouble(), 2), rotationSupplier.getAsDouble()) * MAX_ANGULAR_SPEED_DEGREES_PER_SECOND * speed;
+
         if(rotation != 0){
-            double rotVel = Math.copySign(Math.sqrt(Math.abs(rotation)), rotation) * Robot.DEFAULT_PERIOD * 110;
+            double rotVel = rotation * Robot.DEFAULT_PERIOD * 10;//Math.copySign(Math.sqrt(Math.abs(rotation)), rotation) * Robot.DEFAULT_PERIOD * 110;
             desiredAngle = drivetrain.getYaw() + rotVel;
         }
-        if(rotation == 0 && (xTranslation != 0 || yTranslation != 0)){
-            drivetrain.setAngleGoal(desiredAngle);
-            rotation = drivetrain.calculateAngleSpeed();
+        if(povAngle.getAsDouble() != -1) {
+            desiredAngle = povAngle.getAsDouble();
         }
+        drivetrain.setAngleGoal(desiredAngle);
+        //}
+        //if(!drivetrain.atAngleGoal()){//rotation == 0 && (xTranslation != 0 || yTranslation != 0) || drivetrain.angle){
+            //drivetrain.setAngleGoal(desiredAngle);
+        rotation = drivetrain.calculateAngleSpeed();
+        // } else {
+        //     rotation = 0;
+        // }
     
 
         // Set the robot to drive in field relative mode, with the rotation controlled by the snap controller

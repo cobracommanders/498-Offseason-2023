@@ -10,16 +10,16 @@ import java.util.function.DoubleSupplier;
 import static org.team498.C2023.Constants.DrivetrainConstants.AngleConstants.MAX_ANGULAR_SPEED_DEGREES_PER_SECOND;
 import static org.team498.C2023.Constants.DrivetrainConstants.MAX_VELOCITY_METERS_PER_SECOND;
 
-public class DefenseDrive extends CommandBase {
+public class SlowDrive extends CommandBase {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
 
     private final DoubleSupplier xTranslationSupplier;
     private final DoubleSupplier yTranslationSupplier;
     private final DoubleSupplier rotationSupplier;
     private final BooleanSupplier slowDriveSupplier;
-    private double desiredAngle;
+    //private double desiredAngle;
 
-    public DefenseDrive(DoubleSupplier xTranslationSupplier,
+    public SlowDrive(DoubleSupplier xTranslationSupplier,
                         DoubleSupplier yTranslationSupplier,
                         DoubleSupplier rotationSupplier,
                         BooleanSupplier slowDriveSupplier) {
@@ -33,7 +33,7 @@ public class DefenseDrive extends CommandBase {
 
     @Override
     public void initialize() {
-        desiredAngle = drivetrain.getYaw();
+        //desiredAngle = drivetrain.getYaw();
     }
 
     @Override
@@ -44,14 +44,14 @@ public class DefenseDrive extends CommandBase {
         double xTranslation = xTranslationSupplier.getAsDouble() * MAX_VELOCITY_METERS_PER_SECOND * Robot.coordinateFlip * speed;
         double yTranslation = yTranslationSupplier.getAsDouble() * MAX_VELOCITY_METERS_PER_SECOND * Robot.coordinateFlip * speed;
         double rotation = rotationSupplier.getAsDouble() * MAX_ANGULAR_SPEED_DEGREES_PER_SECOND * speed;
-        if(rotation != 0){
-            double rotVel = Math.copySign(Math.sqrt(Math.abs(rotation)), rotation) * Robot.DEFAULT_PERIOD * 110;
-            desiredAngle = drivetrain.getYaw() + rotVel;
-        }
-        if(rotation == 0 && (xTranslation != 0 || yTranslation != 0)){
-            drivetrain.setAngleGoal(desiredAngle);
-            rotation = drivetrain.calculateAngleSpeed();
-        }
+        // if(rotation != 0){
+        //     double rotVel = Math.copySign(Math.sqrt(Math.abs(rotation)), rotation) * Robot.DEFAULT_PERIOD * 110;
+        //     desiredAngle = drivetrain.getYaw() + rotVel;
+        // }
+        // if(rotation == 0 && (xTranslation != 0 || yTranslation != 0)){
+        //     drivetrain.setAngleGoal(desiredAngle);
+        //     rotation = drivetrain.calculateAngleSpeed();
+        // }
     
 
         // Set the robot to drive in field relative mode, with the rotation controlled by the snap controller

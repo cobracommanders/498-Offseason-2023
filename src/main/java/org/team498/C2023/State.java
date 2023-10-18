@@ -150,12 +150,12 @@ public enum State {
     }
 
     public enum IntakeWrist {
-        INTAKE(-0.1),
+        INTAKE(-0.07),
         SPIT(0),
         IDLE_OUT(0),
         TRAVEL_CUBE(0),
         TEMPORARY_IDLE(0),
-        TRAVEL_CONE(0),
+        TRAVEL_CONE(-0.2),
         IDLE_IN(-0.3),
         OUTTAKE(0.);
 

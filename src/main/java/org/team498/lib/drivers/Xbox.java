@@ -10,7 +10,8 @@ import java.util.EnumMap;
 
 public class Xbox {
     private final int port;
-    private double deadzone = 0;
+    private double leftDeadzone = 0;
+    private double rightDeadzone = 0;
     private double triggerThreshold = 0.1;
     private final EnumMap<Button, Trigger> buttonTriggers = new EnumMap<>(Button.class);
     // TODO use computeIfAbsent for POV triggers and active triggers
@@ -25,7 +26,8 @@ public class Xbox {
         this.port = port;
     }
 
-    public void setDeadzone(double deadzone) {this.deadzone = deadzone;}
+    public void setLeftDeadzone(double deadzone) {this.leftDeadzone = deadzone;}
+    public void setRightDeadzone(double deadzone) {this.rightDeadzone = deadzone;}
     public void setTriggerThreshold(double triggerThreshold) {this.triggerThreshold = triggerThreshold;}
 
     public enum Button {
@@ -139,9 +141,11 @@ public class Xbox {
      */
     public double getAxis(Axis axis) {
         double rawAxis = getRawAxis(axis);
-        return Math.abs(rawAxis) > deadzone
-               ? rawAxis
-               : 0;
+        double result =  Math.abs(rawAxis) > leftDeadzone ? rawAxis : 0;
+        if (axis == Axis.RightX || axis == Axis.RightY){
+            result = Math.abs(rawAxis) > rightDeadzone ? rawAxis : 0;
+        }
+        return result;
     }
 
     /** @return the controller's left X axis */
@@ -283,7 +287,9 @@ public class Xbox {
      */
     public double rawPOVAngle() {
         double angle = getRawPOV();
-
+        if (angle == -1) {
+            return angle;
+        }
         angle = -RotationUtil.toSignedDegrees(angle);
 
         return angle;

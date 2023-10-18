@@ -9,21 +9,37 @@ import org.team498.C2023.commands.intakewrist.SetIntakeWristToNextState;
 import org.team498.C2023.commands.manipulator.SetManipulatorToNextState;
 import org.team498.C2023.subsystems.elevator.Elevator;
 import org.team498.C2023.commands.elevatorwrist.SetElevatorWristToNextState;
+import org.team498.C2023.commands.intakerollers.SetIntakeRollersToNextState;
 
 public class CollectFromSS extends SequentialCommandGroup {
     public CollectFromSS() {
         super(
-                new SetRobotState(State.TRAVEL_EMPTY),
-                new SetElevatorWristToNextState(),
-                new SetIntakeWristToNextState(),
-                new ConditionalCommand(new SetRobotState(State.DOUBLE_SS), new SetRobotState(State.SINGLE_SS), () -> RobotState.getInstance().inConeMode()),
+                // new SetRobotState(State.TRAVEL_CONE),
+                // new SetElevatorWristToNextState(),
+                // new SetIntakeWristToNextState(),
+                // new SetRobotState(State.DOUBLE_SS),//new ConditionalCommand(new SetRobotState(State.DOUBLE_SS), new SetRobotState(State.SINGLE_SS), () -> RobotState.getInstance().inConeMode()),
+                // new ParallelCommandGroup(
+                //         new SetElevatorToNextState(),
+                //         new SetManipulatorToNextState(),
+                //         new SequentialCommandGroup(
+                //                 new WaitUntilCommand(() -> Elevator.getInstance().aboveIntakeHeight() || Elevator.getInstance().atSetpoint()),
+                //                 new ParallelCommandGroup(
+                //                         new SetElevatorWristToNextState(),
+                //                         new SetIntakeWristToNextState()))));
+                new SetRobotState(State.TRAVEL_CONE),
                 new ParallelCommandGroup(
-                        new SetElevatorToNextState(),
-                        new SetManipulatorToNextState(),
+                        new SetIntakeWristToNextState(),
                         new SequentialCommandGroup(
-                                new WaitUntilCommand(() -> Elevator.getInstance().aboveIntakeHeight() || Elevator.getInstance().atSetpoint()),
+                                new WaitCommand(0.08),
+                                new SetRobotState(State.DOUBLE_SS),
                                 new ParallelCommandGroup(
-                                        new SetElevatorWristToNextState(),
-                                        new SetIntakeWristToNextState()))));
+                                        new SetElevatorToNextState(),
+                                        new SetManipulatorToNextState(),
+                                        new SetElevatorWristToNextState()),
+                                new WaitUntilCommand(() -> Elevator.getInstance().aboveIntakeHeight()
+                                        || Elevator.getInstance().atSetpoint()))),
+                new SetRobotState(State.IDLE_CONE),
+                new SetIntakeWristToNextState(),
+                new SetIntakeRollersToNextState());
     }
 }

@@ -3,7 +3,10 @@ package org.team498.C2023;
 import org.team498.C2023.Constants.OIConstants;
 import org.team498.C2023.RobotState.GameMode;
 import org.team498.C2023.RobotState.ScoringOption;
+import org.team498.C2023.commands.drivetrain.SlowDrive;
 import org.team498.C2023.commands.drivetrain.DefenseDrive;
+import org.team498.C2023.commands.drivetrain.HybridDrive;
+import org.team498.C2023.commands.drivetrain.OffenseDrive;
 import org.team498.C2023.commands.drivetrain.TargetDrive;
 import org.team498.C2023.commands.elevator.ManualElevator;
 import org.team498.C2023.commands.elevator.SetElevatorToNextState;
@@ -19,6 +22,9 @@ import org.team498.lib.drivers.Gyro;
 import org.team498.lib.drivers.Xbox;
 import org.team498.lib.wpilib.ChoiceCommand;
 
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 public class Controls {
@@ -28,21 +34,25 @@ public class Controls {
     private final RobotState robotState = RobotState.getInstance();
 
     public Controls() {
-        driver.setDeadzone(0.15);
+        driver.setLeftDeadzone(0.2);
+        driver.setRightDeadzone(0.2);
         driver.setTriggerThreshold(0.2);
-        operator.setDeadzone(0.2);
+        operator.setLeftDeadzone(0.2);
+        operator.setRightDeadzone(0.2);
         operator.setTriggerThreshold(0.2);
     }
 
     public void configureDefaultCommands() {
         Drivetrain.getInstance()
-                  .setDefaultCommand(new DefenseDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver.rightBumper()));
+                  //.setDefaultCommand(new DefenseDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver.rightBumper()));
+                  .setDefaultCommand(new HybridDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver::rawPOVAngle, driver.rightBumper()));
     }
 
     public void configureDriverCommands() {
         driver.leftTrigger()
               .onTrue(runOnce(() -> robotState.setState(State.INTAKE)).andThen(new GroundIntake()))
               .onFalse(new ReturnToIdle());
+              //.whileTrue(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, driver::rightAngle, driver.rightBumper()));
         driver.leftBumper()
               .onTrue(runOnce(() -> robotState.setState(State.OUTTAKE)).andThen(new GroundIntake()))
               .onFalse(new ReturnToIdle());
@@ -52,7 +62,8 @@ public class Controls {
         driver.rightStick().and(RobotPosition::inCommunity)
               .onTrue(new ShootWhileMoving())
               .onFalse(parallel(new ReturnToIdle(), runOnce(() -> Drivetrain.getInstance().getCurrentCommand().cancel())));
-
+        driver.rightBumper()
+        .whileTrue(new ConditionalCommand(new HybridDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver::rawPOVAngle, driver.rightBumper()),(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> (0-Robot.rotationOffset), driver.rightBumper())), ()-> robotState.getState() != State.DOUBLE_SS));
         driver.rightTrigger()
               .whileTrue(either(
                       new TargetDrive(/*() -> 0*/driver::leftYSquared , driver::leftXSquared, driver.rightBumper(), RobotPosition::getFutureScoringNodePosition),
@@ -61,7 +72,7 @@ public class Controls {
                               && RobotState.getInstance().getNextScoringOption() != ScoringOption.SPIT
                               && RobotState.getInstance().inShootDriveMode()
                                ))
-              .onTrue(new PrepareToScore())
+              .onTrue(new PrepareToScore())//.alongWith(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> 180 - Robot.rotationOffset, driver.rightBumper())))
               .onFalse(new ChoiceCommand(() -> switch (robotState.getNextScoringOption()) {
                   case TOP, MID, LOW -> sequence(new VerifyScoreLocation(),
                                             either(
@@ -72,7 +83,7 @@ public class Controls {
                                             new Score()
                                            );
                   case SPIT -> new Spit();
-              }));
+              }));//.alongWith(new DefenseDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver.rightBumper())));
 
         driver.X().onTrue(new Spit());
         driver.Y().onTrue(Robot.fullCheck.test());
@@ -89,7 +100,10 @@ public class Controls {
         operator.rightBumper().onTrue(runOnce(() -> robotState.setCurrentGameMode(GameMode.CONE)));
         operator.leftBumper().onTrue(runOnce(() -> robotState.setCurrentGameMode(GameMode.CUBE)));
 
-        operator.leftTrigger().onTrue(new CollectFromSS()).onFalse(new ReturnToIdle());
+        operator.leftTrigger()
+        .onTrue(new CollectFromSS()
+        .deadlineWith(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> (0-Robot.rotationOffset), driver.rightBumper())))
+        .onFalse(new ReturnToIdle());
 
         operator.rightTrigger()
                 .toggleOnTrue(either(runOnce(() -> robotState.setState(State.SPIT_CUBE)),
