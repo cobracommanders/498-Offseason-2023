@@ -35,6 +35,7 @@ public class HighHighMidConeBump implements Auto {
                 new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
                 new PrepareToScore(),
                 new VerifyScoreLocation(),
+                new WaitCommand(0.1),
                 new SetManipulatorToNextState(),
                 new WaitCommand(0.1),
                 new ParallelCommandGroup(

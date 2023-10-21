@@ -50,6 +50,9 @@ public class HybridDrive extends CommandBase {
 
         if(rotation != 0){
             double rotVel = rotation * Robot.DEFAULT_PERIOD * 10;//Math.copySign(Math.sqrt(Math.abs(rotation)), rotation) * Robot.DEFAULT_PERIOD * 110;
+            if (Math.abs(rotation) <= 0.3) {
+                rotVel = rotation * Robot.DEFAULT_PERIOD * 5;
+            }
             desiredAngle = drivetrain.getYaw() + rotVel;
         }
         if(povAngle.getAsDouble() != -1) {
