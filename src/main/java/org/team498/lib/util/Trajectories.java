@@ -24,7 +24,7 @@ public class Trajectories {
 
     public static PathPlannerTrajectory getPathPlannerTrajectory(String name) {
         // return PathPlanner.loadPath(name, 3, 2.4);
-        return PathPlanner.loadPath(name, 4, 4);//max acccel 5 (4.6, 4.5)
+        return PathPlanner.loadPath(name, 4.6, 4.2);//max acccel 5 (4.6, 4.5)
     }
     public static PathPlannerTrajectory getPathPlannerTrajectory(String name, double maxAccel, double maxVel) {
         // return PathPlanner.loadPath(name, 3, 2.4);

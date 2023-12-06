@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class HighHighMidConeBumpBB implements Auto {
+public class TwoGamePiece implements Auto {
     @Override
     public Command getCommand() {
         return new SequentialCommandGroup(
@@ -47,10 +47,10 @@ public class HighHighMidConeBumpBB implements Auto {
                         new GroundIntake())
                 ),
                 new ParallelCommandGroup(
-                        //new SequentialCommandGroup(
-                            new PathPlannerFollower(PathLib.fourthCubeToEighthNodeBB),
+                        new SequentialCommandGroup(
+                            new PathPlannerFollower(PathLib.fourthCubeToEighthNodeBB)
                             //new LockWheels()
-                        //),
+                        ),
                         new SequentialCommandGroup(
                                 new WaitCommand(0.5),
                                 new ReturnToIdle(),
@@ -60,31 +60,9 @@ public class HighHighMidConeBumpBB implements Auto {
                                 new PrepareToScore())),
                 new VerifyScoreLocation(),
                 new SetManipulatorToNextState(),
-                new WaitCommand(0.1),
-                new ParallelCommandGroup(
-                        new PathPlannerFollower(PathLib.eigthNodeToThirdCubeBB),
-                        new SequentialCommandGroup(
-                                new ParallelCommandGroup(
-                                        new ReturnToIdle(),
-                                        new WaitCommand(2)),
-                                new SetRobotState(State.INTAKE),
-                                new GroundIntake())),
-                //new WaitCommand(0.1), 
-                new ParallelCommandGroup(
-                    new PathPlannerFollower(PathLib.thirdCubeToEighthNodeBB),
-                    new SequentialCommandGroup(
-                        new WaitCommand(1),
-                        new ReturnToIdle(),
-                        new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CUBE)),
-                        new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.MID)),
-                        new WaitCommand(.5),
-                        new PrepareToScore())),
-                    new VerifyScoreLocation(),
-                    new SetManipulatorToNextState(),
-                    new WaitCommand(0.1),
-                    new ParallelCommandGroup(
-                            new PathPlannerFollower(PathLib.eigthNodeToThirdCubeBB),
-                            new ReturnToIdle())
+                new WaitCommand(.5),
+                new ReturnToIdle(),
+            new PathPlannerFollower(PathLib.eigthNodeToFourthCubeBB)
 
         );
     }

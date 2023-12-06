@@ -53,11 +53,11 @@ import java.util.Optional;
 // Credit to team 8177 for inspiring this class
 public class Vision extends SubsystemBase implements VisionIO {
     private final VisionIO rightCamera;
-    private final VisionIO leftCamera;
-    private VisionIOInputs rightInputs;
-    private VisionIOInputs leftInputs;
+    //private final VisionIO leftCamera;
+    public VisionIOInputs rightInputs;
+    //private VisionIOInputs leftInputs;
     private PhotonPoseEstimator rightPoseEstimator;
-    private PhotonPoseEstimator leftPoseEstimator;
+    //private PhotonPoseEstimator leftPoseEstimator;
 
     private final Transform3d rightCameraPose = new Transform3d(
             new Translation3d(Units.inchesToMeters(2.5),
@@ -74,9 +74,9 @@ public class Vision extends SubsystemBase implements VisionIO {
     private Vision() {
         PhotonCamera.setVersionCheckEnabled(false);
         rightCamera = new VisionIOSingleCamera();
-        leftCamera = new VisionIOSingleCamera();
+        //leftCamera = new VisionIOSingleCamera();
         rightInputs = new VisionIOInputs();
-        leftInputs = new VisionIOInputs();
+        //leftInputs = new VisionIOInputs();
 
         try {
             // Attempt to load the AprilTagFieldLayout that will tell us where the tags are
@@ -87,10 +87,10 @@ public class Vision extends SubsystemBase implements VisionIO {
                     PoseStrategy.MULTI_TAG_PNP,
                     rightCameraPose);
             rightPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-            leftPoseEstimator = new PhotonPoseEstimator(fieldLayout,
-                    PoseStrategy.MULTI_TAG_PNP,
-                    leftCameraPose);
-            leftPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+            // leftPoseEstimator = new PhotonPoseEstimator(fieldLayout,
+            //         PoseStrategy.MULTI_TAG_PNP,
+            //         leftCameraPose);
+            // leftPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         } catch (IOException e) {
             // The AprilTagFieldLayout failed to load. We won't be able to estimate poses if
             // we don't know where the tags are.
@@ -104,13 +104,13 @@ public class Vision extends SubsystemBase implements VisionIO {
      *         targets used to create the estimate
      */
     public Optional<EstimatedRobotPose> rightEstimatedPose() {
-        if (rightPoseEstimator == null) {
+        
+        PhotonPipelineResult result = rightPipelineResult();
+        if (rightPoseEstimator == null || result == null) {
             return Optional.empty();
         }
 
         // photonPoseEstimator.setReferencePose(Drivetrain.getInstance().getPose());
-        PhotonPipelineResult result = rightPipelineResult();
-
         var estimatedPosition = rightPoseEstimator.update(
                 result,
                 rightInputs.cameraMatrixData,
@@ -145,13 +145,18 @@ public class Vision extends SubsystemBase implements VisionIO {
             result.createFromPacket(new Packet(rightInputs.targetData));
             result.setTimestampSeconds(rightInputs.targetTimestamp);
         }
+        for (PhotonTrackedTarget target : result.targets) {
+            if (target.getFiducialId() > 8) {
+                return null;
+            }
+        }
         return result;
     }
 
     @Override
     public void periodic() {
         rightCamera.updateInputs(rightInputs);
-        leftCamera.updateInputs(leftInputs);
+        //leftCamera.updateInputs(leftInputs);
     }
 
     private static Vision instance;

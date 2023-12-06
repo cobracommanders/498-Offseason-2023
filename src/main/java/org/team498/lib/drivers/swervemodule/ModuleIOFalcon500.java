@@ -79,12 +79,12 @@ public class ModuleIOFalcon500 implements ModuleIO {
 
         // inputs.driveAppliedVolts = drive.getMotorOutputVoltage();
         inputs.driveCurrentAmps = drive.getStatorCurrent();
-        inputs.driveTemp = (drive.getTemperature() * 1.8) + 32;
+        //inputs.driveTemp = (drive.getTemperature() * 1.8) + 32;
         // inputs.driveRawEncoder = drive.getSelectedSensorPosition();
 
         // inputs.steerAppliedVolts = steer.getMotorOutputVoltage();
         inputs.steerCurrentAmps = steer.getStatorCurrent();
-        inputs.steerTemp = (steer.getTemperature() * 1.8) + 32;
+        //inputs.steerTemp = (steer.getTemperature() * 1.8) + 32;
         // inputs.steerRawEncoder = steer.getSelectedSensorPosition();
     }
 

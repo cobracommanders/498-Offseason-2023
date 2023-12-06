@@ -73,7 +73,7 @@ public class Controls {
                                ))
               .onTrue(new PrepareToScore())//.alongWith(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> 180 - Robot.rotationOffset, driver.rightBumper())))
               .onFalse(new ChoiceCommand(() -> switch (robotState.getNextScoringOption()) {
-                  case TOP, MID, LOW -> sequence(new VerifyScoreLocation(),
+                  case TOP, MID, LOW, AUTO_MID_CONE, AUTO_TOP_CONE -> sequence(new VerifyScoreLocation(),
                                             either(
                                                     waitSeconds(robotState.getNextScoringOption() == ScoringOption.LOW ? 0 : 0),
                                                     waitSeconds(0.1),
@@ -101,7 +101,7 @@ public class Controls {
 
         operator.leftTrigger()
         .onTrue(new CollectFromSS()
-        .deadlineWith(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> (0-Robot.rotationOffset), driver.rightBumper())))
+        .deadlineWith(new OffenseDrive(driver::leftYSquared, driver::leftXSquared, ()-> (0), driver.rightBumper())))
         .onFalse(new ReturnToIdle());
 
         operator.rightTrigger()

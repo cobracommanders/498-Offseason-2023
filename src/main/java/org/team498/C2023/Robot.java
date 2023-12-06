@@ -22,6 +22,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.team498.C2023.commands.auto.*;
+import org.team498.C2023.commands.drivetrain.PathPlannerFollower;
 import org.team498.C2023.commands.robot.ReturnToIdle;
 import org.team498.C2023.subsystems.Drivetrain;
 import org.team498.C2023.subsystems.elevator.Elevator;
@@ -76,31 +77,32 @@ public class Robot extends LoggedRobot {
     private final List<Auto> autoOptions = List.of(
             new MobilityEngageCubeHigh(),
             new MobilityEngageConeMid(),
-            new JustAutoShot(),
+            //new JustAutoShot(),
             new JustScore(),
-            new CubeEngage(),
-            new ConeTaxi(),
-            new CubeTaxi(),
-            new ConeTaxiBump(),
-            new CubeTaxiBump(),
-            new TwoPlusOneBump(),
-            new HighMidCubeEngage(),
-            new HighMidCubeEngageBump(),
+            //new CubeEngage(),
+            //new ConeTaxi(),
+            //new CubeTaxi(),
+            //new ConeTaxiBump(),
+            //new CubeTaxiBump(),
+            //new TwoPlusOneBump(),
+            //new HighMidCubeEngage(),
+            //new HighMidCubeEngageBump(),
             //new HighMidCube(),
             //new HighMidCubeBump(),
-            new HighHighCubeEngage(),
-            new HighHighCubeEngageBump(),
+            //new HighHighCubeEngage(),
+            //new HighHighCubeEngageBump(),
             //new HighHighCube(),
             //new HighHighCubeBump(),
-            new ThreeBump(),
-            new ThreeBumpEngage(),
+            //new ThreeBump(),
+           // new ThreeBumpEngage(),
             //new TestAuto(),
-            new HighHighCone(),
-            new HighMidHighCube(),
-            new HighHighMidConeBump(),
-            new HighCubeEngagePlusOne(),
-            new HighHighHighConeBump(),
-            new HighHighMidConeBumpBB()
+            //new HighHighCone(),
+            //new HighMidHighCube(),
+            //new HighHighMidConeBump(),
+            //new HighCubeEngagePlusOne(),
+           // new HighHighHighConeBump(),
+            new HighHighMidConeBumpBB(),
+            new TwoGamePiece()
             //new HighLowConeMobilityEngage()
             //new WaitCommand(10)
                                                   );
@@ -244,6 +246,8 @@ public class Robot extends LoggedRobot {
     @Override
     public void teleopInit() {
         matchStarted = true;
+        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance().schedule(new ReturnToIdle());
     }
 
     @Override

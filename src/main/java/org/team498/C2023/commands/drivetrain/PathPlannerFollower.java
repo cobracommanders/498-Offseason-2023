@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -39,6 +40,7 @@ public class PathPlannerFollower extends CommandBase {
 
     @Override
     public void initialize() {
+        DriverStation.reportWarning("command start : \t" + DriverStation.getMatchTime(), false);
         trajectoryTimer.reset();
         trajectoryTimer.start();
 
@@ -58,6 +60,7 @@ public class PathPlannerFollower extends CommandBase {
         }
 
         stopTimes.addAll(stopPoints.keySet());
+        DriverStation.reportWarning("path start : \t" + DriverStation.getMatchTime(), false);
 
         // Pose2d initialPose = Robot.alliance == Alliance.Blue ? trajectory.getInitialHolonomicPose() : PoseUtil.flip(trajectory.getInitialHolonomicPose());
         // drivetrain.setPose(initialPose);
@@ -137,6 +140,8 @@ public class PathPlannerFollower extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        //System.out.println("path end : \t" + DriverStation.getMatchTime());
+        DriverStation.reportWarning("path end : \t" + DriverStation.getMatchTime(), false);
         drivetrain.stop();
     }
 }

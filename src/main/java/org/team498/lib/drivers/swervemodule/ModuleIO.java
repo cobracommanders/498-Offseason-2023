@@ -23,6 +23,6 @@ public interface ModuleIO {
 
     default void setState(SwerveModuleState state) {}
     default void updateIntegratedEncoder() {}
-    default void setBrakeMode(boolean enable) {}
+    default void setBrakeMode(boolean enable) {}  
     default String getName() {return "";}
 }

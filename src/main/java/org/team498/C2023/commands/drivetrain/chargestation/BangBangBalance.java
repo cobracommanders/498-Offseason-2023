@@ -7,14 +7,13 @@ import org.team498.lib.drivers.Gyro;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class BangBangBalance extends CommandBase {
-    private Gyro gyro = Gyro.getInstance();
     private Drivetrain drivetrain = Drivetrain.getInstance();
     private double deadzone;
     private double speed;
 
     public BangBangBalance() {
-        deadzone = 7;
-        speed = 1;
+        deadzone = 8;
+        speed = .3;
         addRequirements(drivetrain);
     }
 
@@ -25,7 +24,7 @@ public class BangBangBalance extends CommandBase {
 
     @Override
     public void execute() {
-        double angle = gyro.getPitch();
+        double angle = drivetrain.getPitch();
         if (Math.abs(angle) > deadzone) {
             drivetrain.drive(Math.copySign(speed, -angle * Robot.coordinateFlip), 0, drivetrain.calculateAngleSpeed(), true);
         } else {

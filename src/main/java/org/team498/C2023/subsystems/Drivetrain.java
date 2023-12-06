@@ -8,18 +8,24 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.targeting.PhotonTrackedTarget;
 import org.team498.C2023.Constants;
 import org.team498.C2023.Ports;
 import org.team498.C2023.Robot;
+import org.team498.C2023.RobotPosition;
 import org.team498.C2023.Constants.Mode;
 import org.team498.C2023.subsystems.vision.Vision;
 import org.team498.lib.drivers.gyro.GyroIO;
@@ -35,6 +41,8 @@ import org.team498.lib.util.PoseUtil;
 import org.team498.lib.wpilib.ChassisSpeeds;
 
 import static org.team498.C2023.Constants.DrivetrainConstants.*;
+
+import javax.xml.crypto.Data;
 
 public class Drivetrain extends SubsystemBase {
     private final ModuleIO[] modules;
@@ -114,8 +122,28 @@ public class Drivetrain extends SubsystemBase {
         poseEstimator.update(Rotation2d.fromDegrees(getYaw()), getModulePositions());
         var visionPose = Vision.getInstance().rightEstimatedPose();
         visionPose.ifPresent(pose -> {
-            poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
-        });
+            boolean temp = true;
+            Alliance alliance = Robot.alliance;
+            if (Math.abs(getAllianceAdjustedYaw()) > 135) {
+            
+            //if (RobotPosition.inCommunity(pose.estimatedPose.toPose2d())) {
+                for (PhotonTrackedTarget target : visionPose.get().targetsUsed) {
+                    if (alliance == Alliance.Red && (target.getFiducialId() == 5 || target.getFiducialId() == 6 || target.getFiducialId() == 7 || target.getFiducialId() == 8)) {
+                        temp = false;
+                    }
+                    else if (alliance == Alliance.Blue && (target.getFiducialId() == 1 || target.getFiducialId() == 2 || target.getFiducialId() == 3 || target.getFiducialId() == 4)) {
+                        //poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
+                        temp = false;
+  
+                    }
+                }
+                if (temp){
+                    poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
+                }
+            }
+        }
+            
+        );
         //Logger.getInstance().recordOutput("Odometry", getPose());
         
         //LoggerUtil.recordOutput("Drive/RealStates", getModuleStates());
@@ -133,6 +161,10 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    public double getPitch(){
+        return gyroInputs.pitch;
+    }
+
     public void drive(double vx, double vy, double degreesPerSecond, boolean fieldOriented) {
         ChassisSpeeds speeds = fieldOriented
                                ? ChassisSpeeds.fromFieldRelativeSpeeds(-vx, -vy, Math.toRadians(degreesPerSecond), getYaw())
@@ -140,8 +172,12 @@ public class Drivetrain extends SubsystemBase {
 
         speeds.vxMetersPerSecond = xLimiter.calculate(speeds.vxMetersPerSecond);
         speeds.vyMetersPerSecond = yLimiter.calculate(speeds.vyMetersPerSecond);
-
-        stateSetpoints = kinematics.toSwerveModuleStates(speeds);
+        double dt = Robot.defaultPeriodSecs * 2;
+        Pose2d newPose = new Pose2d(speeds.vxMetersPerSecond * dt, speeds.vyMetersPerSecond * dt, Rotation2d.fromRadians(speeds.omegaRadiansPerSecond * dt));
+        Twist2d twist = new Pose2d().log(newPose);
+        ChassisSpeeds updatedSpeeds = new ChassisSpeeds(twist.dx / dt, twist.dy / dt, twist.dtheta / dt);
+        
+        stateSetpoints = kinematics.toSwerveModuleStates(updatedSpeeds);
 
         setModuleStates(stateSetpoints);
     }
@@ -181,6 +217,10 @@ public void setPositionGoal(Pose2d pose) {xController.setSetpoint(pose.getX()); 
     public Pose2d getPose() {return poseEstimator.getEstimatedPosition();}
     public void setPose(Pose2d pose) {poseEstimator.resetPosition(Rotation2d.fromDegrees(getYaw()), getModulePositions(), pose);}
     public double getYaw() {return gyroInputs.yaw;}
+    public double getAllianceAdjustedYaw() {
+        double result = getYaw();
+        return Robot.alliance == Alliance.Red ? ((result + 180 + 180) % 360) - 180 : result;
+    }
     public void setYaw(double angle) {gyro.setYaw(angle); angleController.reset(angle);}
     /** Return a double array with a value for yaw pitch and roll in that order */
     public double[] getGyro() {return new double[] {gyroInputs.yaw, gyroInputs.pitch, gyroInputs.roll};}

@@ -30,10 +30,10 @@ public final class FieldPositions {
     public static final Rectangle blueChargeStation = new Rectangle(2.9, height - 6.4955, 1.95, 2.47);
     public static final Rectangle redChargeStation = flip(blueChargeStation);
 
-    public static final Region blueCommunity = new Region(new Rectangle(1.37, height - 3.98, 1.985, 1.475), new Rectangle(1.37, 0, 3.54, 4.0337));
+    public static final Region blueCommunity = new Region(new Rectangle(1.37, height - 3.98, 1.985, 1.475), new Rectangle(1.37, 0, 2.04, 4.0337));//w=3.54
 
     public static final Region redCommunity = new Region(flip(new Rectangle(1.37, height - 3.98, 1.985, 1.475)),
-                                                         flip(new Rectangle(1.37, 0, 3.54, 4.0337))
+                                                         flip(new Rectangle(1.37, 0, 2.04, 4.0337))//w=3.54
     );
 
     public static final Point[] stagingMarkers = new Point[] {new Point(7.0775, height - 7.085), new Point(7.0775, height - 5.862), new Point(7.0775,

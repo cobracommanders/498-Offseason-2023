@@ -11,7 +11,7 @@ public class RobotState extends SubsystemBase {
     private boolean shootDrive = false;
 
     public enum GameMode {CUBE, CONE}
-    public enum ScoringOption {TOP, MID, LOW, SPIT}
+    public enum ScoringOption {TOP, MID, LOW, SPIT, AUTO_MID_CONE, AUTO_TOP_CONE}
 
 
     public void setCurrentGameMode(GameMode gameMode) {currentGameMode = gameMode; Logger.getInstance().recordOutput("Game Mode", gameMode.name());}
@@ -36,6 +36,8 @@ public class RobotState extends SubsystemBase {
                 case MID -> currentGameMode == GameMode.CONE ? State.SHOOT_DRIVE_CONE_MID : State.SHOOT_DRIVE_CUBE_MID;
                 case SPIT -> State.SPIT_CUBE;
                 case LOW -> State.LOW_CONE;
+                case AUTO_MID_CONE -> State.AUTO_MID_CONE;
+                case AUTO_TOP_CONE -> State.AUTO_TOP_CONE;
             };
         } else {
             state = switch (nextScoringOption) {
@@ -43,6 +45,8 @@ public class RobotState extends SubsystemBase {
                 case MID -> currentGameMode == GameMode.CONE ? State.MID_CONE : State.MID_CUBE;
                 case SPIT -> State.SPIT_CUBE;
                 case LOW -> State.LOW_CONE;
+                case AUTO_MID_CONE -> State.AUTO_MID_CONE;
+                case AUTO_TOP_CONE -> State.AUTO_TOP_CONE;
             };
         }
 

@@ -4,9 +4,12 @@ public enum State {
     SPIT_CUBE(Elevator.SPIT, ElevatorWrist.SPIT, IntakeWrist.SPIT, IntakeRollers.SPIT, Manipulator.SPIT),
     SLOW_SPIT(Elevator.SPIT, ElevatorWrist.SPIT, IntakeWrist.SPIT, IntakeRollers.SLOW_SPIT, Manipulator.SPIT),
 
+
     TOP_CONE(Elevator.TOP_CONE, ElevatorWrist.TOP_CONE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.TOP_CONE),
+    AUTO_TOP_CONE(Elevator.AUTO_TOP_CONE, ElevatorWrist.AUTO_TOP_CONE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.AUTO_TOP_CONE),
     TOP_CUBE(Elevator.TOP_CUBE, ElevatorWrist.TOP_CUBE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.TOP_CUBE),
 
+    AUTO_MID_CONE(Elevator.AUTO_MID_CONE, ElevatorWrist.AUTO_MID_CONE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.AUTO_MID_CONE),
     MID_CONE(Elevator.MID_CONE, ElevatorWrist.MID_CONE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.MID_CONE),
     MID_CUBE(Elevator.MID_CUBE, ElevatorWrist.MID_CUBE, IntakeWrist.IDLE_IN, IntakeRollers.IDLE, Manipulator.MID_CUBE),
 
@@ -56,16 +59,18 @@ public enum State {
         CONEARISER_CONE(0),
         CONEARISER_CUBE(0),
         SINGLE_SS(0.16745),
-        DOUBLE_SS(0.55),
+        DOUBLE_SS(0.545),
 
         SPIT(0),
 
+        AUTO_MID_CONE(0.35),
         MID_CONE(0.35),//.45
         MID_CUBE(0.48),
 
         LOW_CONE(0.4),
 
-        TOP_CONE(0.675),//0.7
+        TOP_CONE(0.7),//0.7
+        AUTO_TOP_CONE(0.75),
         TOP_CUBE( 0.7),
 
         AUTO_SHOT(0),
@@ -91,23 +96,25 @@ public enum State {
 
     public enum ElevatorWrist {
         SINGLE_SS(0.06),
-        DOUBLE_SS(0),
+        DOUBLE_SS(0.015),
 
         SPIT(-0.025),
 
         LOW_CONE(-0.06),
 
         MID_CONE(.075),
+        AUTO_MID_CONE(0.09),
         // MID_CONE(0.1),
         MID_CUBE(-0.04),
 
         // TOP_CONE(0.25),
         TOP_CONE(.075),//0.075
+        AUTO_TOP_CONE(.065),
         TOP_CUBE(0),
 
         TRAVEL(0.041067),
 
-        INTAKE(-0.05),
+        INTAKE(-0.065),
         // INTAKE(-0.03),
         OUTTAKE(-0.06),
 
@@ -167,17 +174,19 @@ public enum State {
     }
 
     public enum Manipulator {
-        INTAKE_CONE(-.75),
+        INTAKE_CONE(-1),
         INTAKE_CUBE(-.75),
 
         SPIT(0.9),
-        MID_CONE(.0025),
-        MID_CUBE(0.4),
-        TOP_CONE(2.3),
-        TOP_CUBE(0.4),
+        AUTO_MID_CONE(0.01),
+        MID_CONE(.005),
+        MID_CUBE(0.0005),
+        TOP_CONE(3),
+        AUTO_TOP_CONE(.5),
+        TOP_CUBE(0.33),
         LOW_CONE(0.1),
 
-        AUTO_SHOT(0.5),
+        AUTO_SHOT(0.5), 
         SHOOT_DRIVE_CUBE_MID(0),
         SHOOT_DRIVE_CUBE_TOP(0),
         SHOOT_DRIVE_CONE_MID(0),

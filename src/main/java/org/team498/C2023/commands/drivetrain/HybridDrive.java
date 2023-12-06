@@ -56,7 +56,7 @@ public class HybridDrive extends CommandBase {
             desiredAngle = drivetrain.getYaw() + rotVel;
         }
         if(povAngle.getAsDouble() != -1) {
-            desiredAngle = povAngle.getAsDouble();
+            desiredAngle = povAngle.getAsDouble() - Robot.rotationOffset;
         }
         drivetrain.setAngleGoal(desiredAngle);
         //}

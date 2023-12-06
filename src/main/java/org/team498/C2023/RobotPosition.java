@@ -23,6 +23,9 @@ public class RobotPosition {
     public static boolean inRegion(BaseRegion region) {
         return region.contains(Point.fromPose2d(drivetrain.getPose()));
     }
+    public static boolean inRegion(BaseRegion region, Pose2d pose) {
+        return region.contains(Point.fromPose2d(pose));
+    }
 
     public static boolean isNear(Pose2d pose, double epsilon) {
         return Math.hypot(drivetrain.getPose().getX() - pose.getX(), drivetrain.getPose().getY() - pose.getY()) < epsilon;
@@ -44,6 +47,17 @@ public class RobotPosition {
         return inRegion(Robot.alliance == Alliance.Blue
                                      ? FieldPositions.blueCommunity
                                      : FieldPositions.redCommunity);
+    }
+    public static boolean inCommunity(Pose2d pose) {
+        return inRegion(Robot.alliance == Alliance.Blue
+                                     ? FieldPositions.blueCommunity
+                                     : FieldPositions.redCommunity, pose);
+    }
+
+    public static boolean inLoadingZone() {
+        return inRegion(Robot.alliance == Alliance.Blue
+                                     ? FieldPositions.blueLoadingZone
+                                     : FieldPositions.redLoadingZone);
     }
 
     public static double calculateDegreesToTarget(Pose2d target) {
@@ -73,6 +87,8 @@ public class RobotPosition {
             case TOP -> 0;
             case MID -> 1;
             case LOW, SPIT -> 2;
+            case AUTO_MID_CONE -> 1;
+            case AUTO_TOP_CONE -> 0;
         };
 
         Grid closestGrid = getClosestGrid(reference);

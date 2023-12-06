@@ -44,4 +44,5 @@ public class PathLib {
     public static final PathPlannerTrajectory ninthNodeToFourthCubeBB = Trajectories.getPathPlannerTrajectory("Ninth Node To Fourth Cube BB");
     public static final PathPlannerTrajectory fourthCubeToEighthNodeBB = Trajectories.getPathPlannerTrajectory("Fourth Cube To Eighth Node BB");
     public static final PathPlannerTrajectory thirdCubeToEighthNodeBB = Trajectories.getPathPlannerTrajectory("Third Cube To Eighth Node BB");
+    public static final PathPlannerTrajectory eigthNodeToFourthCubeBB = Trajectories.getPathPlannerTrajectory("Eigth Node To Fourth Cube BB");
 }

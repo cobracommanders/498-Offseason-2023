@@ -32,12 +32,12 @@ public class HighHighMidConeBump implements Auto {
     public Command getCommand() {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CONE)),
-                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
+                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.AUTO_MID_CONE)),
                 new PrepareToScore(),
                 new VerifyScoreLocation(),
-                new WaitCommand(0.1),
+                new WaitCommand(0.2),
                 new SetManipulatorToNextState(),
-                new WaitCommand(0.1),
+                new WaitCommand(0.2),
                 new ParallelCommandGroup(
                     new PathPlannerFollower(PathLib.ninthNodeToFourthCube),
                     new SequentialCommandGroup(
@@ -60,14 +60,15 @@ public class HighHighMidConeBump implements Auto {
                                 new WaitCommand(0.5),
                                 new PrepareToScore())),
                 new VerifyScoreLocation(),
+                new WaitCommand(.5),
                 new SetManipulatorToNextState(),
-                new WaitCommand(0.5),
+                new WaitCommand(0.2),
                 new ParallelCommandGroup(
                         new PathPlannerFollower(PathLib.eigthNodeToThirdCube),
                         new SequentialCommandGroup(
                                 new ParallelCommandGroup(
                                         new ReturnToIdle(),
-                                        new WaitCommand(2)),
+                                        new WaitCommand(1.8)),
                                 new SetRobotState(State.INTAKE),
                                 new GroundIntake())),
                 //new WaitCommand(0.1), 

@@ -7,11 +7,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import org.team498.C2023.FieldPositions;
+import org.team498.C2023.PathLib;
 import org.team498.C2023.RobotPosition;
 import org.team498.C2023.RobotState;
 import org.team498.C2023.State;
 import org.team498.C2023.RobotState.GameMode;
 import org.team498.C2023.RobotState.ScoringOption;
+import org.team498.C2023.commands.drivetrain.PathPlannerFollower;
 import org.team498.C2023.commands.robot.FullScore;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -23,7 +25,7 @@ public class JustScore implements Auto {
     public Command getCommand() {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> RobotState.getInstance().setCurrentGameMode(GameMode.CONE)),
-                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.TOP)),
+                new InstantCommand(() -> RobotState.getInstance().setNextScoringOption(ScoringOption.AUTO_TOP_CONE)),
                 new FullScore()
         );
     }
