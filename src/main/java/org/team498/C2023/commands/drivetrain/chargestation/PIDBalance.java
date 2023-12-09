@@ -5,9 +5,9 @@ import org.team498.C2023.subsystems.Drivetrain;
 import org.team498.lib.drivers.Gyro;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class PIDBalance extends CommandBase {
+public class PIDBalance extends Command {
     private Gyro gyro = Gyro.getInstance();
     private Drivetrain drivetrain = Drivetrain.getInstance();
     private boolean isTipped;

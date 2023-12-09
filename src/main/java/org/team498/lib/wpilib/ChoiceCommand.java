@@ -1,11 +1,11 @@
 package org.team498.lib.wpilib;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.function.Supplier;
 
-public class ChoiceCommand extends CommandBase { //TODO in the offseason, figure out how to add requirements
+public class ChoiceCommand extends Command { //TODO in the offseason, figure out how to add requirements
     private final Supplier<Command> commandSupplier;
     private Command commandToRun;
 

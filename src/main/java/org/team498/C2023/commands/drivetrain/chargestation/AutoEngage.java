@@ -3,13 +3,13 @@ package org.team498.C2023.commands.drivetrain.chargestation;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import org.team498.C2023.Robot;
 import org.team498.C2023.subsystems.Drivetrain;
 import org.team498.lib.util.PoseUtil;
 
-public class AutoEngage extends CommandBase {
+public class AutoEngage extends Command {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final double chargingStationPoseX = 3.93;
     private final boolean yEnabled;

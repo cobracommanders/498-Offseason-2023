@@ -3,7 +3,7 @@ package org.team498.lib;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.team498.lib.drivers.Blinkin;
 import org.team498.lib.drivers.Blinkin.BlinkinColor;
 
@@ -16,9 +16,9 @@ import static edu.wpi.first.wpilibj2.command.Commands.*;
 public class SystemsCheck {
     private final LinkedList<TestableObject> tests = new LinkedList<>();
     private final ShuffleboardTab tab;
-    private final CommandBase resetCommand;
+    private final Command resetCommand;
 
-    public SystemsCheck(String name, CommandBase resetCommand, TestableObject... tests) {
+    public SystemsCheck(String name, Command resetCommand, TestableObject... tests) {
         this.tests.addAll(List.of(tests));
         tab = Shuffleboard.getTab("Systems Check " + name);
         this.resetCommand = resetCommand;
@@ -38,7 +38,7 @@ public class SystemsCheck {
         }
     }
 
-    public CommandBase test() {
+    public Command test() {
         var testCommands = new LinkedList<Command>();
         for (TestableObject test : tests) {
             test.hasPassed = false;
@@ -48,7 +48,7 @@ public class SystemsCheck {
         return sequence(testCommands.toArray(new Command[testCommands.size()]));
     }
 
-    private CommandBase getTestCommand(TestableObject test) {
+    private Command getTestCommand(TestableObject test) {
         return sequence(
                 runOnce(() -> Blinkin.getInstance().setColor(BlinkinColor.SOLID_YELLOW)),
                 race(

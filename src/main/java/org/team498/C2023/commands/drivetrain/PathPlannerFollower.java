@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import org.littletonrobotics.junction.Logger;
 import org.team498.C2023.Robot;
@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PathPlannerFollower extends CommandBase {
+public class PathPlannerFollower extends Command {
     private final Drivetrain drivetrain;
     private final PathPlannerTrajectory trajectory;
     private final Timer trajectoryTimer = new Timer();

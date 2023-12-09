@@ -1,12 +1,12 @@
 package org.team498.C2023.commands.elevator;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.function.DoubleSupplier;
 
 import org.team498.C2023.subsystems.elevator.Elevator;
 
-public class ManualElevator extends CommandBase {
+public class ManualElevator extends Command {
     private final Elevator elevator = Elevator.getInstance();
     private final DoubleSupplier speedSupplier;
 

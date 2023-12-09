@@ -1,11 +1,11 @@
 package org.team498.C2023.commands.elevatorwrist;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import org.team498.C2023.RobotState;
 import org.team498.C2023.subsystems.elevatorwrist.ElevatorWrist;
 
-public class SetElevatorWristToNextState extends CommandBase {
+public class SetElevatorWristToNextState extends Command {
     private final ElevatorWrist wrist = ElevatorWrist.getInstance();
 
     public SetElevatorWristToNextState() {

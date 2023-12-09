@@ -1,11 +1,11 @@
 package org.team498.C2023.commands.intakewrist;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import org.team498.C2023.RobotState;
 import org.team498.C2023.subsystems.intakewrist.IntakeWrist;
 
-public class SetIntakeWristToNextState extends CommandBase {
+public class SetIntakeWristToNextState extends Command {
     private final IntakeWrist intake = IntakeWrist.getInstance();
 
     public SetIntakeWristToNextState() {

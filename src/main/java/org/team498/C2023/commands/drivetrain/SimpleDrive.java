@@ -1,11 +1,11 @@
 package org.team498.C2023.commands.drivetrain;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.team498.C2023.subsystems.Drivetrain;
 
 import java.util.function.DoubleSupplier;
 
-public class SimpleDrive extends CommandBase {
+public class SimpleDrive extends Command {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
 
     private final DoubleSupplier xTranslationSupplier;
