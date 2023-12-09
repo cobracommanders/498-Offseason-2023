@@ -21,7 +21,9 @@ import org.team498.C2023.Constants;
 import org.team498.C2023.Ports;
 import org.team498.C2023.Robot;
 import org.team498.C2023.Constants.Mode;
+import org.team498.C2023.subsystems.SwerveModule;
 import org.team498.C2023.subsystems.vision.Vision;
+import org.team498.lib.drivers.Gyro;
 import org.team498.lib.drivers.gyro.GyroIO;
 import org.team498.lib.drivers.gyro.GyroIOInputsAutoLogged;
 import org.team498.lib.drivers.gyro.GyroIOPigeon2;
@@ -37,44 +39,32 @@ import org.team498.lib.wpilib.ChassisSpeeds;
 import static org.team498.C2023.Constants.DrivetrainConstants.*;
 
 public class Drivetrain extends SubsystemBase {
-    private final ModuleIO[] modules;
-    private final ModuleIOInputsAutoLogged[] moduleInputs = new ModuleIOInputsAutoLogged[] {new ModuleIOInputsAutoLogged(), new ModuleIOInputsAutoLogged(), new ModuleIOInputsAutoLogged(), new ModuleIOInputsAutoLogged()};
-    private final ProfiledPIDController angleController = new ProfiledPIDController(AngleConstants.P, AngleConstants.I, AngleConstants.D, AngleConstants.CONTROLLER_CONSTRAINTS);
-    private final PIDController xController = new PIDController(PoseConstants.P, PoseConstants.I, PoseConstants.D);
-    private final PIDController yController = new PIDController(PoseConstants.P, PoseConstants.I, PoseConstants.D);
-    private final SlewRateLimiter xLimiter = new SlewRateLimiter(MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-    private final SlewRateLimiter yLimiter = new SlewRateLimiter(MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-    private final SwerveDriveKinematics kinematics;
-    private final SwerveDrivePoseEstimator poseEstimator;
+    private final SwerveModule[] modules;
+
     private SwerveModuleState[] stateSetpoints;
     
+    private final Gyro gyro = Gyro.getInstance();
+    
+    private final SwerveDriveKinematics kinematics;
+
+    private final SwerveDrivePoseEstimator poseEstimator;
+
+    private final ProfiledPIDController angleController = new ProfiledPIDController(0, 0, 0, null, 0);
+
+    private final PIDController xController = new PIDController(0, 0, 0, 0);
+    private final SlewRateLimiter xLimiter = new SlewRateLimiter(MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+    private final SlewRateLimiter yLimiter = new SlewRateLimiter(MAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+    private final PIDController yController = new PIDController(0, 0, 0, 0);
     private final Field2d field2d = new Field2d();
-    private final GyroIO gyro;
-    private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
-
-    private Drivetrain() { 
-        modules = switch (Constants.mode) {
-            case REAL, REPLAY ->
-                new ModuleIO[] {
-                    new ModuleIOFalcon500(ModuleIOFalcon500.Module.FL),
-                    new ModuleIOFalcon500(ModuleIOFalcon500.Module.FR),
-                    new ModuleIOFalcon500(ModuleIOFalcon500.Module.BL),
-                    new ModuleIOFalcon500(ModuleIOFalcon500.Module.BR),
-                    };
-            case SIM -> new ModuleIO[] {
-                    new ModuleIOSim("FL"),
-                    new ModuleIOSim("FR"),
-                    new ModuleIOSim("BL"),
-                    new ModuleIOSim("BR")
-            };
+    public Drivetrain(){
+        modules = new SwerveModule[]{
+            new SwerveModule(0, 0, 0, getName(), 0),
+            new SwerveModule(0, 0, 0, getName(), 0),
+            new SwerveModule(0, 0, 0, getName(), 0),
+            new SwerveModule(0, 0, 0, getName(), 0) 
         };
 
-        gyro = switch (Constants.mode) {
-            case REAL, REPLAY -> new GyroIOPigeon2(Ports.Drivetrain.GYRO);
-            case SIM -> new GyroIOSim();
-        };
-
-        angleController.enableContinuousInput(-180, 180);
+         angleController.enableContinuousInput(-180, 180);
         angleController.setTolerance(0);
         xController.setTolerance(0);
         yController.setTolerance(0);
@@ -89,48 +79,20 @@ public class Drivetrain extends SubsystemBase {
 
         stateSetpoints = getModuleStates();
 
-        for (ModuleIO m : modules) m.setBrakeMode(true);
     }
 
     @Override
     public void periodic() {
         field2d.setRobotPose(getPose().getX(), getPose().getY(), getPose().getRotation());
         SmartDashboard.putData(field2d);
-        SmartDashboard.putNumber("Pitch", gyroInputs.pitch);
+        SmartDashboard.putNumber("Pitch", gyro.getPitch());
         for (int i = 0; i < modules.length; i++) {
-            modules[i].updateInputs(moduleInputs[i]);
-            //Logger.getInstance().processInputs("Drive/" + modules[i].getName() + "_Module", moduleInputs[i]);
-
-            // modules[i].setBrakeMode(RobotState.isEnabled());
-
+            //modules[i].setBrakeMode(RobotState.isEnabled());
             if (RobotState.isDisabled()) {
                 modules[i].updateIntegratedEncoder();
             }
         }
-        gyro.updateInputs(gyroInputs);
-        //Logger.getInstance().processInputs("Gyro", gyroInputs);
-
-        var visionPose = Vision.getInstance().getEstimatedPose();
-        visionPose.ifPresent(pose -> {
-            poseEstimator.addVisionMeasurement(PoseUtil.toPose2d(pose.estimatedPose), pose.timestampSeconds);
-        });
         poseEstimator.update(Rotation2d.fromDegrees(getYaw()), getModulePositions());
-        
-        //Logger.getInstance().recordOutput("Odometry", getPose());
-        
-        //LoggerUtil.recordOutput("Drive/RealStates", getModuleStates());
-
-        if (Constants.mode == Mode.REPLAY) {
-            var targetStates = new SwerveModuleState[4];
-            for (int i = 0; i < modules.length; i++) {
-                // targetStates[i] = new SwerveModuleState(moduleInputs[i].targetSpeedMetersPerSecond, Rotation2d.fromDegrees(moduleInputs[i].targetAngle));
-            }
-            //LoggerUtil.recordOutput("Drive/TargetStates", targetStates);
-        }
-
-        if (Constants.mode == Mode.SIM) {
-            gyro.setYaw(gyroInputs.yaw + Math.toDegrees(kinematics.toChassisSpeeds(stateSetpoints).omegaRadiansPerSecond) * Robot.DEFAULT_PERIOD);
-        }
     }
 
     public void drive(double vx, double vy, double degreesPerSecond, boolean fieldOriented) {
@@ -152,13 +114,13 @@ public class Drivetrain extends SubsystemBase {
 
     public SwerveModulePosition[] getModulePositions() {
         var positions = new SwerveModulePosition[modules.length];
-        for (int i = 0; i < modules.length; i++) positions[i] = new SwerveModulePosition(moduleInputs[i].positionMeters, Rotation2d.fromDegrees(moduleInputs[i].angle));
+        for (int i = 0; i < modules.length; i++) positions[i] = new SwerveModulePosition(modules[i].getPosition(), Rotation2d.fromDegrees(moduleInputs[i].angle));
         return positions;
     }
 
     public SwerveModuleState[] getModuleStates() {
         var states = new SwerveModuleState[modules.length];
-        for (int i = 0; i < modules.length; i++) states[i] = new SwerveModuleState(moduleInputs[i].speedMetersPerSecond, Rotation2d.fromDegrees(moduleInputs[i].angle));
+        for (int i = 0; i < modules.length; i++) states[i] = new SwerveModuleState(modules[i].getSpeed(), Rotation2d.fromDegrees(moduleInputs[i].angle));
         return states;
     }
 
@@ -180,10 +142,10 @@ public void setPositionGoal(Pose2d pose) {xController.setSetpoint(pose.getX()); 
 
     public Pose2d getPose() {return poseEstimator.getEstimatedPosition();}
     public void setPose(Pose2d pose) {poseEstimator.resetPosition(Rotation2d.fromDegrees(getYaw()), getModulePositions(), pose);}
-    public double getYaw() {return gyroInputs.yaw;}
+    public double getYaw() {return gyro.getYaw();}
     public void setYaw(double angle) {gyro.setYaw(angle); angleController.reset(angle);}
     /** Return a double array with a value for yaw pitch and roll in that order */
-    public double[] getGyro() {return new double[] {gyroInputs.yaw, gyroInputs.pitch, gyroInputs.roll};}
+    //public double[] getGyro() {return new double[] {gyroInputs.yaw, gyroInputs.pitch, gyroInputs.roll};}
 
     public void stop() {drive(0, 0, 0, false);}
     public void X() {setModuleStates(new SwerveModuleState[] {new SwerveModuleState(0, Rotation2d.fromDegrees(45)), new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), new SwerveModuleState(0, Rotation2d.fromDegrees(-45)), new SwerveModuleState(0, Rotation2d.fromDegrees(45))});}

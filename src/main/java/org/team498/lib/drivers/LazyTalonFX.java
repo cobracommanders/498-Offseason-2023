@@ -7,11 +7,16 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class LazyTalonFX extends TalonFX {
     private double currentSetpoint = Double.NaN;
 
-        private NeutralModeValue currNeutralMode;
+    private NeutralModeValue currNeutralMode;
 
     public LazyTalonFX(int deviceNumber) {
         super(deviceNumber);
     }
+
+    public LazyTalonFX(int deviceNumber, String canBus){
+        super(deviceNumber, canBus);
+    }
+
     @Override
     public void set(double setpoint){
         if(setpoint != currentSetpoint){

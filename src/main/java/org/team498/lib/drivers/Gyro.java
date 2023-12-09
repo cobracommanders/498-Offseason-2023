@@ -1,20 +1,20 @@
 package org.team498.lib.drivers;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.StatusSignal;
+
 import edu.wpi.first.wpilibj.RobotBase;
 import org.team498.lib.util.RotationUtil;
 
 import static org.team498.C2023.Ports.Drivetrain.GYRO;
 
-public class Gyro extends Pigeon2 {
+public class Gyro extends com.ctre.phoenix6.hardware.Pigeon2 {
     private double simAngle = 0;
 
     /** @return yaw angle in degrees (CCW positive), ranging from -180 to 180 degrees */
     @Override
     public synchronized double getYaw() {
-        return RobotBase.isReal()
-               ? RotationUtil.toSignedDegrees(super.getYaw())
-               : -RotationUtil.toSignedDegrees(simAngle);
+        return RotationUtil.toSignedDegrees(super.getYaw().getValueAsDouble());             
     }
     
     public double getPitch() {
