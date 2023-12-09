@@ -8,7 +8,10 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import static org.team498.C2023.Constants.DrivetrainConstants.MK4I_DRIVE_REDUCTION_L3;
+import static org.team498.C2023.Constants.DrivetrainConstants.MK4I_STEER_REDUCTION_L3;
+import static org.team498.C2023.Constants.DrivetrainConstants.DRIVE_WHEEL_DIAMETER;
+import static org.team498.C2023.Constants.DrivetrainConstants.DRIVE_WHEEL_CIRCUMFERENCE;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -31,20 +34,24 @@ public class SwerveModule {
         configCANCoder(encoder);
     }
     public void setState(SwerveModuleState state) {
-        currentTarget = optimize(state, Falcon500Conversions.falconToDegrees(steer.getPosition(), MK4I_STEER_REDUCTION_L3));
+        currentTarget = optimize(state, Falcon500Conversions.falconToDegrees(steer.getPosition().getValueAsDouble(), MK4I_STEER_REDUCTION_L3));
 
         drive.set(Falcon500Conversions.MPSToFalcon(currentTarget.speedMetersPerSecond, Units.inchesToMeters(DRIVE_WHEEL_DIAMETER), MK4I_DRIVE_REDUCTION_L3));
         steer.setPosition(Falcon500Conversions.degreesToFalcon(currentTarget.angle.getDegrees(), MK4I_STEER_REDUCTION_L3));
     }
     public void updateIntegratedEncoder() {
-        steer.setSelectedSensorPosition(Falcon500Conversions.degreesToFalcon(encoder.getAbsolutePosition() - angleOffset, MK4I_STEER_REDUCTION_L3));
+        steer.setPosition(Falcon500Conversions.degreesToFalcon(encoder.getAbsolutePosition().getValueAsDouble() - angleOffset, MK4I_STEER_REDUCTION_L3));
     }
     public double getSpeed(){
         return currentTarget.speedMetersPerSecond;
     }
-    //public double getPosition(){
-        //return Falcon500Conversions.falconToDegrees(drive.getSelectedSensorPosition(), MK4I_DRIVE_REDUCTION_L3) / 360) * Units.inchesToMeters(DRIVE_WHEEL_CIRCUMFERENCE);
-   // }
+    public double getPosition(){
+        return Falcon500Conversions.falconToDegrees(drive.getSelectedSensorPosition(), MK4I_DRIVE_REDUCTION_L3) / 360 * Units.inchesToMeters(DRIVE_WHEEL_CIRCUMFERENCE);
+   }
+
+   public double getAngle(){
+    return encoder.getAbsolutePosition().getValueAsDouble() * 360;
+   }
     // Custom optimize method by team 364
     private SwerveModuleState optimize(SwerveModuleState desiredState, double currentAngle) {
         double targetAngle = placeInAppropriate0To360Scope(currentAngle, desiredState.angle.getDegrees());

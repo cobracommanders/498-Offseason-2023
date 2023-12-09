@@ -31,4 +31,9 @@ public class LazyTalonFX extends TalonFX {
             super.setNeutralMode(neutralMode);
         }
     }
+
+    @Override
+    public double getSelectedSensorPosition(){
+        
+    }
 }

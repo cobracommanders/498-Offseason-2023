@@ -16,24 +16,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.littletonrobotics.junction.Logger;
-import org.team498.C2023.Constants;
-import org.team498.C2023.Ports;
-import org.team498.C2023.Robot;
-import org.team498.C2023.Constants.Mode;
-import org.team498.C2023.subsystems.SwerveModule;
-import org.team498.C2023.subsystems.vision.Vision;
 import org.team498.lib.drivers.Gyro;
-import org.team498.lib.drivers.gyro.GyroIO;
-import org.team498.lib.drivers.gyro.GyroIOInputsAutoLogged;
-import org.team498.lib.drivers.gyro.GyroIOPigeon2;
-import org.team498.lib.drivers.gyro.GyroIOSim;
-import org.team498.lib.drivers.swervemodule.ModuleIO;
-import org.team498.lib.drivers.swervemodule.ModuleIOFalcon500;
-import org.team498.lib.drivers.swervemodule.ModuleIOInputsAutoLogged;
-import org.team498.lib.drivers.swervemodule.ModuleIOSim;
-import org.team498.lib.logger.LoggerUtil;
-import org.team498.lib.util.PoseUtil;
 import org.team498.lib.wpilib.ChassisSpeeds;
 
 import static org.team498.C2023.Constants.DrivetrainConstants.*;
@@ -85,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         field2d.setRobotPose(getPose().getX(), getPose().getY(), getPose().getRotation());
         SmartDashboard.putData(field2d);
-        SmartDashboard.putNumber("Pitch", gyro.getPitch());
+        SmartDashboard.putNumber("Pitch", gyro.pitch());
         for (int i = 0; i < modules.length; i++) {
             //modules[i].setBrakeMode(RobotState.isEnabled());
             if (RobotState.isDisabled()) {
@@ -114,13 +97,13 @@ public class Drivetrain extends SubsystemBase {
 
     public SwerveModulePosition[] getModulePositions() {
         var positions = new SwerveModulePosition[modules.length];
-        for (int i = 0; i < modules.length; i++) positions[i] = new SwerveModulePosition(modules[i].getPosition(), Rotation2d.fromDegrees(moduleInputs[i].angle));
+        for (int i = 0; i < modules.length; i++) positions[i] = new SwerveModulePosition(modules[i].getPosition(), Rotation2d.fromDegrees(modules[i].getAngle()));
         return positions;
     }
 
     public SwerveModuleState[] getModuleStates() {
         var states = new SwerveModuleState[modules.length];
-        for (int i = 0; i < modules.length; i++) states[i] = new SwerveModuleState(modules[i].getSpeed(), Rotation2d.fromDegrees(moduleInputs[i].angle));
+        for (int i = 0; i < modules.length; i++) states[i] = new SwerveModuleState(modules[i].getSpeed(), Rotation2d.fromDegrees(modules[i].getAngle()));
         return states;
     }
 
@@ -142,7 +125,7 @@ public void setPositionGoal(Pose2d pose) {xController.setSetpoint(pose.getX()); 
 
     public Pose2d getPose() {return poseEstimator.getEstimatedPosition();}
     public void setPose(Pose2d pose) {poseEstimator.resetPosition(Rotation2d.fromDegrees(getYaw()), getModulePositions(), pose);}
-    public double getYaw() {return gyro.getYaw();}
+    public double getYaw() {return gyro.yaw();}
     public void setYaw(double angle) {gyro.setYaw(angle); angleController.reset(angle);}
     /** Return a double array with a value for yaw pitch and roll in that order */
     //public double[] getGyro() {return new double[] {gyroInputs.yaw, gyroInputs.pitch, gyroInputs.roll};}
