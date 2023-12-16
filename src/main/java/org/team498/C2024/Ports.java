@@ -2,7 +2,7 @@ package org.team498.C2023;
 
 public final class Ports {
 
-    public static class Drivetrain {
+    public static class DrivetrainPorts {
         public static final int FL_DRIVE = 1;
         public static final int FR_DRIVE = 5;
         public static final int BL_DRIVE = 3;

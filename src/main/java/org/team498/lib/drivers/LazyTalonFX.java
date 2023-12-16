@@ -32,8 +32,7 @@ public class LazyTalonFX extends TalonFX {
         }
     }
 
-    @Override
     public double getSelectedSensorPosition(){
-        
+        return super.getPosition().getValueAsDouble();
     }
 }
