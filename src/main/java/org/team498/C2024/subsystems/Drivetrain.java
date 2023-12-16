@@ -1,4 +1,4 @@
-package org.team498.C2023.subsystems;
+package org.team498.C2024.subsystems;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
@@ -8,6 +8,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -16,10 +17,12 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import static org.team498.C2024.Constants.DrivetrainConstants.*;
+
+import org.team498.C2024.Robot;
 import org.team498.lib.drivers.Gyro;
 import org.team498.lib.wpilib.ChassisSpeeds;
-
-import static org.team498.C2023.Constants.DrivetrainConstants.*;
 
 public class Drivetrain extends SubsystemBase {
     private final SwerveModule[] modules;
@@ -85,11 +88,18 @@ public class Drivetrain extends SubsystemBase {
 
         speeds.vxMetersPerSecond = xLimiter.calculate(speeds.vxMetersPerSecond);
         speeds.vyMetersPerSecond = yLimiter.calculate(speeds.vyMetersPerSecond);
-
+        speeds = updateSpeeds(speeds);
         stateSetpoints = kinematics.toSwerveModuleStates(speeds);
 
         setModuleStates(stateSetpoints);
     }
+
+    private ChassisSpeeds updateSpeeds(ChassisSpeeds speeds){
+        double dt = Robot.DEFAULT_PERIOD *2;
+        Pose2d newPose = new Pose2d(speeds.vxMetersPerSecond *dt, speeds.vyMetersPerSecond *dt, Rotation2d.fromRadians(speeds.omegaRadiansPerSecond *dt));
+        Twist2d twist = new Pose2d().log(newPose);
+        return new ChassisSpeeds(twist.dx/dt, twist.dy/dt, twist.dtheta/dt);
+    }   
 
     public void setModuleStates(SwerveModuleState[] states) {
         for (int i = 0; i < modules.length; i++) modules[i].setState(states[i]);

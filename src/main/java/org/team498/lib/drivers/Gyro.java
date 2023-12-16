@@ -1,11 +1,6 @@
 package org.team498.lib.drivers;
-
-import com.ctre.phoenix6.StatusSignal;
-
-import edu.wpi.first.wpilibj.RobotBase;
+import static org.team498.C2024.Ports.DrivetrainPorts.GYRO;
 import org.team498.lib.util.RotationUtil;
-
-import static org.team498.C2023.Ports.Drivetrain.GYRO;
 
 public class Gyro extends com.ctre.phoenix6.hardware.Pigeon2 {
 

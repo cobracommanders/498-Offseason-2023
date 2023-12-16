@@ -1,9 +1,9 @@
 package org.team498.lib.drivers;
 
+import static org.team498.C2024.Ports.Accessories.BLINKIN;
+
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-
-import static org.team498.C2023.Ports.Accessories.BLINKIN;
 
 public class Blinkin {
     private final Spark blinkin;
