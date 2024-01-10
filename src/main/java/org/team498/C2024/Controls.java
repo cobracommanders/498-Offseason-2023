@@ -1,8 +1,8 @@
 package org.team498.C2024;
 
 import org.team498.C2024.Constants.OIConstants;
-import org.team498.C2024.commands.drivetrain.HybridDrive;
-import org.team498.C2024.subsystems.Drivetrain;
+import org.team498.C2024.commands.drivetrain.DefenseDrive;
+import org.team498.C2024.subsystems.drivetrain.Drivetrain;
 import org.team498.lib.drivers.Xbox;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
@@ -19,7 +19,7 @@ public class Controls {
     }
 
     public void configureDefaultCommands() {
-        Drivetrain.getInstance().setDefaultCommand(new HybridDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver::rawPOVAngle, driver.rightBumper()));
+        Drivetrain.getInstance().setDefaultCommand(new DefenseDrive(driver::leftYSquared, driver::leftXSquared, driver::rightX, driver.rightBumper()));
     }
 
     public void configureDriverCommands() {
